@@ -96,7 +96,6 @@ def hvp(y, w, v):
 def calc_influence(z, t, s_test, model, z_loader):
 
     s_test_vec = s_test
-
     grad_z_vec = grad_z(z = z, t = t, model = model)
 
     influence = -sum([

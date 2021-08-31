@@ -42,7 +42,7 @@ if __name__ == '__main__':
     )
 
     optimizer = SGD(model.parameters(), lr=0.01)
-    criterion = nn.CrossEntropyLoss(reduction = 'None')
+    criterion = nn.CrossEntropyLoss(reduction = 'none')
 
 from dataloader import CustomDataset
 from torch.utils.data import DataLoader
@@ -60,23 +60,12 @@ from influence_function import calc_influence
 import time
 
 def calc_influence_dataset(X, y,  X_female_train, y_female_train, X_male_train, y_male_train,
-                     model, train_loader, gpu):
-  influences = []
+                     model, train_loader):
+
   s_test_vec = s_test(z_group1=X_female_train, t_group1=y_female_train, z_group2=X_male_train, t_group2=y_male_train,
                       model=model, z_loader=train_loader)
 
-  influences = calc_influence(X, y, s_test_vec, model, train_loader, gpu = gpu)
-  '''
-  for i, z in enumerate(X):
-    #print(str(i + 1) + '/' + str(len(X)))
-    start = time.time()
-    influence = calc_influence(z, y[i], s_test_vec,
-                               model, train_loader, gpu = gpu)
-    end = time.time()
-    print(end - start)
-    influences.append(influence)
-  '''
-
+  influences = calc_influence(X, y, s_test_vec, model, train_loader)
   return influences
 
 
@@ -85,14 +74,17 @@ for epoch in range(10):
         if gpu >= 0: z, t, model = z.cuda(), t.cuda(), model.cuda()
         model.train()
         y_pred = model(z)
+        start = 0
         if epoch == 0:
             weights = torch.ones(len(t))
         else:
-            #start = time.time()
+            start = time.time()
             weights = torch.tensor(calc_influence_dataset(z, t,
                                                           X_female_train, y_female_train,
                                                           X_male_train, y_male_train,
                                                           model, train_loader, gpu))
+        end = time.time()
+        print("time for calculating influence scores of a batch {}".format(end - start))
 
             # add normalization of influence scores
 

@@ -1,3 +1,4 @@
 # influence_pytorch
 
-1. minor만 조정 
+## Todo
+1. scratch, reweighting, influence score 비교
