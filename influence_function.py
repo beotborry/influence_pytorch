@@ -93,10 +93,10 @@ def hvp(y, w, v):
 
     return return_grads
 
-def calc_influence(z, t, z_group1, t_group1, z_group2, t_group2, model, z_loader, recursion_depth=5000,
-                   damp=0.01, scale=25.0, gpu=-1):
-    s_test_vec = s_test(z_group1 = z_group1, t_group1 = t_group1, z_group2 = z_group2, t_group2 = t_group2,
-               model = model, z_loader = z_loader)
+def calc_influence(z, t, s_test, model, z_loader):
+
+    s_test_vec = s_test
+
     grad_z_vec = grad_z(z = z, t = t, model = model)
 
     influence = -sum([

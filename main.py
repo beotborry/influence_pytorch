@@ -42,7 +42,7 @@ if __name__ == '__main__':
     )
 
     optimizer = SGD(model.parameters(), lr=0.01)
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.CrossEntropyLoss(reduction = 'None')
 
 from dataloader import CustomDataset
 from torch.utils.data import DataLoader
@@ -62,16 +62,20 @@ import time
 def calc_influence_dataset(X, y,  X_female_train, y_female_train, X_male_train, y_male_train,
                      model, train_loader, gpu):
   influences = []
+  s_test_vec = s_test(z_group1=X_female_train, t_group1=y_female_train, z_group2=X_male_train, t_group2=y_male_train,
+                      model=model, z_loader=train_loader)
+
+  influences = calc_influence(X, y, s_test_vec, model, train_loader, gpu = gpu)
+  '''
   for i, z in enumerate(X):
     #print(str(i + 1) + '/' + str(len(X)))
     start = time.time()
-    influence = calc_influence(z, y[i],
-                               X_female_train, y_female_train,
-                               X_male_train, y_male_train,
+    influence = calc_influence(z, y[i], s_test_vec,
                                model, train_loader, gpu = gpu)
     end = time.time()
     print(end - start)
     influences.append(influence)
+  '''
 
   return influences
 
@@ -89,6 +93,9 @@ for epoch in range(10):
                                                           X_female_train, y_female_train,
                                                           X_male_train, y_male_train,
                                                           model, train_loader, gpu))
+
+            # add normalization of influence scores
+
             #end = time.time()
             #print(end - start)
 
