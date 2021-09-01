@@ -26,7 +26,7 @@ def grad_z(z, t, model, gpu=-1):
     if gpu >= 0:
         z, t = z.cuda(), t.cuda()
     y = model(z)
-    y = F.softmax(y)
+    y = F.softmax(y, dim=0)
     if y.dim() == 1: y = y.view(1, 2)
 
     loss = F.cross_entropy(y,t)
@@ -50,7 +50,7 @@ def s_test(z_group1, t_group1, z_group2, t_group2, model, z_loader, recursion_de
             if gpu >= 0:
                 x, t = x.cuda(), t.cuda()
             y = model(x)
-            y = F.softmax(y)
+            y = F.softmax(y, dim=0)
             loss = torch.nn.functional.cross_entropy(y, t)
             hv = hvp(loss, params, h_estimate)
             with torch.no_grad():
@@ -97,7 +97,6 @@ def calc_influence(z, t, s_test, model, z_loader):
 
     s_test_vec = s_test
     grad_z_vec = grad_z(z = z, t = t, model = model)
-
     influence = -sum([
         torch.sum(k * j).data for k, j in zip(grad_z_vec, s_test_vec)
     ]) / len(z_loader.dataset)

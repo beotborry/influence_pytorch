@@ -8,12 +8,12 @@ from torch.utils.data import DataLoader
 import torch.nn.functional as F
 from sklearn.linear_model import LogisticRegression
 import numpy as np
-from utils import split_dataset, logloss_one_label
+from utils import split_dataset, exp_normalize
 from mlp import MLP
 from torch.autograd import grad
 from influence_function import grad_z, s_test, calc_influence
 import time
-
+from tqdm import tqdm
 
 
 if __name__ == '__main__':
@@ -64,13 +64,16 @@ def calc_influence_dataset(X, y,  X_female_train, y_female_train, X_male_train, 
 
   s_test_vec = s_test(z_group1=X_female_train, t_group1=y_female_train, z_group2=X_male_train, t_group2=y_male_train,
                       model=model, z_loader=train_loader)
+  influences = []
+  for z, t in zip(X, y):
+      influences.append(calc_influence(z, t, s_test_vec, model, train_loader))
 
-  influences = calc_influence(X, y, s_test_vec, model, train_loader)
   return influences
 
 
 for epoch in range(10):
-    for z, t in train_loader:
+    print("Epoch: {}".format(epoch))
+    for z, t in tqdm(train_loader):
         if gpu >= 0: z, t, model = z.cuda(), t.cuda(), model.cuda()
         model.train()
         y_pred = model(z)
@@ -78,19 +81,12 @@ for epoch in range(10):
         if epoch == 0:
             weights = torch.ones(len(t))
         else:
-            start = time.time()
             weights = torch.tensor(calc_influence_dataset(z, t,
                                                           X_female_train, y_female_train,
                                                           X_male_train, y_male_train,
-                                                          model, train_loader, gpu))
-        end = time.time()
-        print("time for calculating influence scores of a batch {}".format(end - start))
-
+                                                          model, train_loader))
             # add normalization of influence scores
-
-            #end = time.time()
-            #print(end - start)
-
+            weights = exp_normalize(weights)
         if gpu >= 0: weights = weights.cuda()
 
         loss = torch.mean(weights * criterion(y_pred, t))
@@ -99,6 +95,7 @@ for epoch in range(10):
         optimizer.step()
 
     model.eval()
+    print()
     with torch.no_grad():
         for z, t in test_loader:
             if gpu >= 0: z, t = z.cuda(), t.cuda()

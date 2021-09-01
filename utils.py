@@ -52,3 +52,9 @@ def logloss_one_label(true_label, predicted, eps=1e-15, softmax=False):
     else:
         predicted = predicted[:, 0]
         return -torch.log(1-predicted)
+
+def exp_normalize(x):
+    x = x * (10 ** 4)
+    b = x.max()
+    y = np.exp(x - b)
+    return y / y.sum()
