@@ -60,10 +60,10 @@ from influence_function import calc_influence
 import time
 
 def calc_influence_dataset(X, y,  X_female_train, y_female_train, X_male_train, y_male_train,
-                     model, train_loader):
+                     model, train_loader, gpu = -1):
 
   s_test_vec = s_test(z_group1=X_female_train, t_group1=y_female_train, z_group2=X_male_train, t_group2=y_male_train,
-                      model=model, z_loader=train_loader)
+                      model=model, z_loader=train_loader, gpu = gpu)
   influences = []
   for z, t in zip(X, y):
       influences.append(calc_influence(z, t, s_test_vec, model, train_loader))
@@ -84,7 +84,7 @@ for epoch in range(10):
             weights = torch.tensor(calc_influence_dataset(z, t,
                                                           X_female_train, y_female_train,
                                                           X_male_train, y_male_train,
-                                                          model, train_loader))
+                                                          model, train_loader, gpu=gpu))
             # add normalization of influence scores
             weights = exp_normalize(weights)
         if gpu >= 0: weights = weights.cuda()

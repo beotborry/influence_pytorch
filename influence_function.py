@@ -93,10 +93,10 @@ def hvp(y, w, v):
 
     return return_grads
 
-def calc_influence(z, t, s_test, model, z_loader):
+def calc_influence(z, t, s_test, model, z_loader, gpu = -1):
 
     s_test_vec = s_test
-    grad_z_vec = grad_z(z = z, t = t, model = model)
+    grad_z_vec = grad_z(z = z, t = t, model = model, gpu = gpu)
     influence = -sum([
         torch.sum(k * j).data for k, j in zip(grad_z_vec, s_test_vec)
     ]) / len(z_loader.dataset)
