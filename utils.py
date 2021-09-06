@@ -2,7 +2,7 @@ import numpy as np
 import torch.nn.functional as F
 import torch
 
-def split_dataset(features, labels, sen_attrs, constraint):
+def split_dataset(features, labels, sen_attrs, constraint=None):
     # _(labels)(group idx)
 
     if constraint == "EO":
@@ -39,16 +39,31 @@ def split_dataset(features, labels, sen_attrs, constraint):
 
         return ret_features, ret_labels
 
+def exp_normalize(x):
+    x = -x * (500)
+    b = x.max()
+    y = np.exp(x - b)
+    return (y / y.sum()) * len(x)
 
-def logloss_one_label(true_label, predicted, eps=1e-15, softmax=False):
-    #p = np.clip(predicted, eps, 1-eps)
-    if softmax:
-        predicted = F.softmax(predicted, dim=1)
-
-
-    if true_label == 1:
-        predicted = predicted[:, 1]
-        return torch.sum(-torch.log(predicted))
+def get_accuracy(outputs, labels, binary=False, sigmoid_output=False, reduction='mean'):
+    #if multi-label classification
+    if len(labels.size())>1:
+        outputs = (outputs>0.0).float()
+        correct = ((outputs==labels)).float().sum()
+        total = torch.tensor(labels.shape[0] * labels.shape[1], dtype=torch.float)
+        avg = correct / total
+        return avg.item()
+    if binary:
+        if sigmoid_output:
+            predictions = (outputs >= 0.5).float()
+        else:
+            predictions = (torch.sigmoid(outputs) >= 0.5).float()
     else:
-        predicted = predicted[:, 0]
-        return -torch.log(1-predicted)
+        predictions = torch.argmax(outputs, 1)
+    c = (predictions == labels).float().squeeze()
+
+    if reduction == 'none':
+        return c
+    else:
+        accuracy = torch.mean(c)
+        return accuracy.item()
