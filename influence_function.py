@@ -1,10 +1,8 @@
-from utils import split_dataset, logloss_one_label
 from torch.autograd import grad
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
-from influence_function_utils import display_progress
-import numpy as np
+
 
 def grad_z(z, t, model, gpu=-1):
     """Calculates the gradient z. One grad_z should be computed for each
@@ -40,7 +38,7 @@ def s_test(z_group1, t_group1, z_group2, t_group2, model, z_loader, recursion_de
     group1_loss = nn.CrossEntropyLoss()(model(z_group1), t_group1)
     group2_loss = nn.CrossEntropyLoss()(model(z_group2), t_group2)
 
-    violation = group1_loss - group2_loss
+    violation = abs(group1_loss - group2_loss)
 
     params = [p for p in model.parameters() if p.requires_grad]
     v = list(grad(violation, params, create_graph=True))
@@ -59,6 +57,21 @@ def s_test(z_group1, t_group1, z_group2, t_group2, model, z_loader, recursion_de
                     for _v, _h_e, _hv in zip(v, h_estimate, hv)]
             break
     return h_estimate
+
+def avg_s_test(z_group1, t_group1, z_group2, t_group2, model, z_loader, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1, r=1):
+    s_test_vec_list = []
+    for i in range(r):
+        s_test_vec_list.append(s_test(
+            z_group1=z_group1, t_group1=t_group1, z_group2=z_group2, t_group2=t_group2, model=model,
+            z_loader=z_loader, recursion_depth=recursion_depth, damp=damp, scale=scale, gpu=gpu
+        ))
+    s_test_vec = s_test_vec_list[0]
+    for i in range(1, r):
+        s_test_vec += s_test_vec_list[i]
+
+    s_test_vec = [i / r for i in s_test_vec]
+
+    return s_test_vec
 
 def hvp(y, w, v):
     """Multiply the Hessians of y and w by v.
