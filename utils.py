@@ -39,8 +39,32 @@ def split_dataset(features, labels, sen_attrs, constraint=None):
 
         return ret_features, ret_labels
 
-def exp_normalize(x):
-    x = -x * (500)
+def split_dataset_multi(features, labels, protected_attributes):
+    z_groups = []
+    t_groups = []
+    for sen_arr in protected_attributes:
+        z_group = []
+        t_group = []
+
+        for idx, sen_val in enumerate(sen_arr):
+            if sen_val == 1:
+                z_group.append(features[idx])
+                t_group.append(labels[idx])
+
+        z_groups.append(torch.FloatTensor(z_group))
+        t_groups.append(torch.LongTensor(t_group))
+
+    return z_groups, t_groups
+
+def get_eopp_idx(t_groups):
+    ret = []
+    for t_group in t_groups:
+        idx = np.where(t_group.numpy() == 1)
+        ret.append(idx)
+    return ret
+
+def exp_normalize(x, scale_factor):
+    x = -x * (scale_factor)
     b = x.max()
     y = np.exp(x - b)
     return (y / y.sum()) * len(x)

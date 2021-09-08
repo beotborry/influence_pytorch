@@ -1,0 +1,185 @@
+/Users/juhyeon/opt/anaconda3/envs/influence_weighting/bin/python3.9 /Users/juhyeon/Desktop/influence_pytorch/reweighting_ref.py
+-1
+Iteration: 0
+100%|██████████| 20/20 [00:10<00:00,  1.87it/s]
+
+Iteration 0, Test Acc: 0.8902853259673486
+Iteration 0, Violation: 0.14442789554595947
+Iteration: 0, Eopp: 0.010849508746705011
+Iteration: 1
+100%|██████████| 20/20 [00:09<00:00,  2.01it/s]
+
+Iteration 1, Test Acc: 0.8923285951981178
+Iteration 1, Violation: 0.17127656936645508
+Iteration: 1, Eopp: 0.005188114066618732
+Iteration: 2
+100%|██████████| 20/20 [00:08<00:00,  2.24it/s]
+
+Iteration 2, Test Acc: 0.8930497490442716
+Iteration 2, Violation: 0.18519532680511475
+Iteration: 2, Eopp: 0.013072130361849982
+Iteration: 3
+100%|██████████| 20/20 [00:09<00:00,  2.11it/s]
+
+Iteration 3, Test Acc: 0.894371864428887
+Iteration 3, Violation: 0.19104290008544922
+Iteration: 3, Eopp: 0.02526359932901988
+Iteration: 4
+100%|██████████| 20/20 [00:10<00:00,  1.92it/s]
+
+Iteration 4, Test Acc: 0.8950930182750408
+Iteration 4, Violation: 0.19032323360443115
+Iteration: 4, Eopp: 0.012263359693266224
+Iteration: 5
+100%|██████████| 20/20 [00:10<00:00,  1.94it/s]
+
+Iteration 5, Test Acc: 0.896509197125068
+Iteration 5, Violation: 0.1830352544784546
+Iteration: 5, Eopp: 0.003121255691349162
+Iteration: 6
+100%|██████████| 20/20 [00:09<00:00,  2.07it/s]
+
+Iteration 6, Test Acc: 0.8969899663558373
+Iteration 6, Violation: 0.16955578327178955
+Iteration: 6, Eopp: 0.00549364965252816
+Iteration: 7
+100%|██████████| 20/20 [00:09<00:00,  2.13it/s]
+
+Iteration 7, Test Acc: 0.8992474913597107
+Iteration 7, Violation: 0.15259301662445068
+Iteration: 7, Eopp: 0.008507069254732824
+Iteration: 8
+100%|██████████| 20/20 [00:11<00:00,  1.70it/s]
+
+Iteration 8, Test Acc: 0.9005696067443261
+Iteration 8, Violation: 0.13273167610168457
+Iteration: 8, Eopp: 0.018392044092978677
+Iteration: 9
+100%|██████████| 20/20 [00:10<00:00,  1.84it/s]
+
+Iteration 9, Test Acc: 0.9023724913597106
+Iteration 9, Violation: 0.1137235164642334
+Iteration: 9, Eopp: 0.022777378384855024
+Iteration: 10
+100%|██████████| 20/20 [00:09<00:00,  2.07it/s]
+
+Iteration 10, Test Acc: 0.9033340298212491
+Iteration 10, Violation: 0.0889972448348999
+Iteration: 10, Eopp: 0.030008387251377916
+Iteration: 11
+100%|██████████| 20/20 [00:10<00:00,  1.94it/s]
+
+Iteration 11, Test Acc: 0.9035744144366338
+Iteration 11, Violation: 0.07030439376831055
+Iteration: 11, Eopp: 0.03989336208962377
+Iteration: 12
+100%|██████████| 20/20 [00:11<00:00,  1.77it/s]
+
+Iteration 12, Test Acc: 0.9033340298212491
+Iteration 12, Violation: 0.0544586181640625
+Iteration: 12, Eopp: 0.013779055835130616
+Iteration: 13
+100%|██████████| 20/20 [00:10<00:00,  1.92it/s]
+
+Iteration 13, Test Acc: 0.9034542221289414
+Iteration 13, Violation: 0.039893507957458496
+Iteration: 13, Eopp: 0.01212556913491497
+Iteration: 14
+100%|██████████| 20/20 [00:09<00:00,  2.03it/s]
+
+Iteration 14, Test Acc: 0.9034542221289414
+Iteration 14, Violation: 0.02801799774169922
+Iteration: 14, Eopp: 0.0047028516654685215
+Iteration: 15
+100%|██████████| 20/20 [00:10<00:00,  1.93it/s]
+
+Iteration 15, Test Acc: 0.9039349913597107
+Iteration 15, Violation: 0.01758396625518799
+Iteration: 15, Eopp: 0.009279894560268398
+Iteration: 16
+100%|██████████| 20/20 [00:10<00:00,  1.88it/s]
+
+Iteration 16, Test Acc: 0.9035744144366338
+Iteration 16, Violation: 0.009260296821594238
+  0%|          | 0/20 [00:00<?, ?it/s]Iteration: 16, Eopp: 0.008087706685837526
+Iteration: 17
+100%|██████████| 20/20 [00:09<00:00,  2.14it/s]
+
+Iteration 17, Test Acc: 0.9035744144366338
+Iteration 17, Violation: 0.002119302749633789
+Iteration: 17, Eopp: 0.011933860531991414
+Iteration: 18
+100%|██████████| 20/20 [00:08<00:00,  2.36it/s]
+
+Iteration 18, Test Acc: 0.9033340298212491
+Iteration 18, Violation: 0.0029900074005126953
+Iteration: 18, Eopp: 0.015780014378145246
+Iteration: 19
+100%|██████████| 20/20 [00:10<00:00,  1.85it/s]
+
+Iteration 19, Test Acc: 0.9036946067443261
+Iteration 19, Violation: 0.005128741264343262
+Iteration: 19, Eopp: 0.014587826503714374
+Iteration: 20
+100%|██████████| 20/20 [00:11<00:00,  1.76it/s]
+
+Iteration 20, Test Acc: 0.9039349913597107
+Iteration 20, Violation: 0.005477547645568848
+Iteration: 20, Eopp: 0.010280373831775713
+Iteration: 21
+100%|██████████| 20/20 [00:09<00:00,  2.09it/s]
+
+Iteration 21, Test Acc: 0.9038147990520183
+Iteration 21, Violation: 0.004384517669677734
+Iteration: 21, Eopp: 0.007165109034267925
+Iteration: 22
+100%|██████████| 20/20 [00:09<00:00,  2.12it/s]
+
+Iteration 22, Test Acc: 0.9038147990520183
+Iteration 22, Violation: 0.002247333526611328
+Iteration: 22, Eopp: 0.007165109034267925
+Iteration: 23
+100%|██████████| 20/20 [00:08<00:00,  2.24it/s]
+
+Iteration 23, Test Acc: 0.9042955682827876
+Iteration 23, Violation: 0.00043010711669921875
+Iteration: 23, Eopp: 0.007895998082913969
+Iteration: 24
+100%|██████████| 20/20 [00:09<00:00,  2.08it/s]
+
+Iteration 24, Test Acc: 0.9044157605904799
+Iteration 24, Violation: 0.002707242965698242
+  0%|          | 0/20 [00:00<?, ?it/s]Iteration: 24, Eopp: 0.007895998082913969
+Iteration: 25
+100%|██████████| 20/20 [00:10<00:00,  1.93it/s]
+
+Iteration 25, Test Acc: 0.9044157605904799
+Iteration 25, Violation: 0.002997756004333496
+  0%|          | 0/20 [00:00<?, ?it/s]Iteration: 25, Eopp: 0.006434219985621881
+Iteration: 26
+100%|██████████| 20/20 [00:10<00:00,  1.86it/s]
+
+Iteration 26, Test Acc: 0.9044157605904799
+Iteration 26, Violation: 0.005802750587463379
+Iteration: 26, Eopp: 0.006434219985621881
+Iteration: 27
+100%|██████████| 20/20 [00:10<00:00,  1.89it/s]
+
+Iteration 27, Test Acc: 0.9046561452058646
+Iteration 27, Violation: 0.008079171180725098
+Iteration: 27, Eopp: 0.003318955188114092
+Iteration: 28
+100%|██████████| 20/20 [00:10<00:00,  1.86it/s]
+
+Iteration 28, Test Acc: 0.9046561452058646
+Iteration 28, Violation: 0.008740782737731934
+Iteration: 28, Eopp: 0.003318955188114092
+Iteration: 29
+100%|██████████| 20/20 [00:10<00:00,  1.97it/s]
+
+Iteration 29, Test Acc: 0.9048965298212491
+Iteration 29, Violation: 0.009205222129821777
+Iteration: 29, Eopp: 0.007165109034267925
+max_iter: 5, max_tradeoff: 18669.761011453982
+
+Process finished with exit code 0
