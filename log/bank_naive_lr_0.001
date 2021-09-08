@@ -1,0 +1,214 @@
+/Users/juhyeon/opt/anaconda3/envs/influence_weighting/bin/python3.9 /Users/juhyeon/Desktop/influence_pytorch/bank_main.py
+-1
+Iteration: 0
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:07<00:00,  2.68it/s]
+
+Iteration 0, Test Acc: 0.8872805182750408
+Iteration 0, Violation: 0.021387219429016113
+Iteration: 0, Eopp: 0.012616822429906548
+Iteration: 1
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:07<00:00,  2.55it/s]
+
+Iteration 1, Test Acc: 0.8933841971250681
+Iteration 1, Violation: 0.04830729961395264
+Iteration: 1, Eopp: 0.012580877066858384
+Iteration: 2
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.00it/s]
+
+Iteration 2, Test Acc: 0.8978313125096835
+Iteration 2, Violation: 0.06060457229614258
+Iteration: 2, Eopp: 0.003121255691349162
+Iteration: 3
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.00it/s]
+
+Iteration 3, Test Acc: 0.9014370817404527
+Iteration 3, Violation: 0.07647645473480225
+Iteration: 3, Eopp: 0.006470165348670037
+Iteration: 4
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.09it/s]
+
+Iteration 4, Test Acc: 0.9029995817404527
+Iteration 4, Violation: 0.09425854682922363
+  0%|          | 0/20 [00:00<?, ?it/s]Iteration: 4, Eopp: 0.00656601965013176
+Iteration: 5
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:05<00:00,  3.35it/s]
+
+Iteration 5, Test Acc: 0.9023045567365793
+Iteration 5, Violation: 0.10339653491973877
+  0%|          | 0/20 [00:00<?, ?it/s]Iteration: 5, Eopp: 0.02371794871794869
+Iteration: 6
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.33it/s]
+
+Iteration 6, Test Acc: 0.9029055182750408
+Iteration 6, Violation: 0.11214518547058105
+Iteration: 6, Eopp: 0.021255691349149286
+Iteration: 7
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:05<00:00,  3.37it/s]
+
+Iteration 7, Test Acc: 0.9019178509712219
+Iteration 7, Violation: 0.12448728084564209
+Iteration: 7, Eopp: 0.05444524323028993
+Iteration: 8
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.31it/s]
+
+Iteration 8, Test Acc: 0.9015311452058645
+Iteration 8, Violation: 0.14012634754180908
+Iteration: 8, Eopp: 0.07021327582075243
+Iteration: 9
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.29it/s]
+
+Iteration 9, Test Acc: 0.9026390048173758
+Iteration 9, Violation: 0.1406172513961792
+  0%|          | 0/20 [00:00<?, ?it/s]Iteration: 9, Eopp: 0.0679067816918284
+Iteration: 10
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.30it/s]
+
+Iteration 10, Test Acc: 0.9032660951981177
+Iteration 10, Violation: 0.14397037029266357
+Iteration: 10, Eopp: 0.0495626647495806
+Iteration: 11
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:05<00:00,  3.36it/s]
+
+Iteration 11, Test Acc: 0.9013430182750408
+Iteration 11, Violation: 0.141393780708313
+Iteration: 11, Eopp: 0.048753894080996896
+Iteration: 12
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.31it/s]
+
+Iteration 12, Test Acc: 0.9024247490442716
+Iteration 12, Violation: 0.14279603958129883
+Iteration: 12, Eopp: 0.054061826024442816
+Iteration: 13
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.13it/s]
+
+Iteration 13, Test Acc: 0.9045620817404527
+Iteration 13, Violation: 0.11998379230499268
+Iteration: 13, Eopp: 0.048640067098011
+Iteration: 14
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.22it/s]
+
+Iteration 14, Test Acc: 0.9013168894327603
+Iteration 14, Violation: 0.14551198482513428
+Iteration: 14, Eopp: 0.05894440450515215
+Iteration: 15
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.24it/s]
+
+Iteration 15, Test Acc: 0.9045620817404527
+Iteration 15, Violation: 0.12455606460571289
+Iteration: 15, Eopp: 0.048640067098011
+Iteration: 16
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.26it/s]
+
+Iteration 16, Test Acc: 0.9039611202019912
+Iteration 16, Violation: 0.12494444847106934
+Iteration: 16, Eopp: 0.04837047687514978
+Iteration: 17
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.13it/s]
+
+Iteration 17, Test Acc: 0.9044418894327604
+Iteration 17, Violation: 0.11776423454284668
+Iteration: 17, Eopp: 0.04671699017493408
+Iteration: 18
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.21it/s]
+
+Iteration 18, Test Acc: 0.9048024663558373
+Iteration 18, Violation: 0.11543846130371094
+Iteration: 18, Eopp: 0.04790917804936495
+Iteration: 19
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.24it/s]
+
+Iteration 19, Test Acc: 0.9051630432789143
+Iteration 19, Violation: 0.1136770248413086
+Iteration: 19, Eopp: 0.04717828900071891
+Iteration: 20
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.24it/s]
+
+Iteration 20, Test Acc: 0.9057378759750954
+Iteration 20, Violation: 0.11680173873901367
+Iteration: 20, Eopp: 0.04333213515456502
+Iteration: 21
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.25it/s]
+
+Iteration 21, Test Acc: 0.9057378759750954
+Iteration 21, Violation: 0.1077718734741211
+Iteration: 21, Eopp: 0.03975557153127246
+Iteration: 22
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.24it/s]
+
+Iteration 22, Test Acc: 0.9053772990520184
+Iteration 22, Violation: 0.11250460147857666
+Iteration: 22, Eopp: 0.037832494608195544
+Iteration: 23
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.16it/s]
+
+Iteration 23, Test Acc: 0.905617683667403
+Iteration 23, Violation: 0.10306549072265625
+Iteration: 23, Eopp: 0.04360172537742629
+Iteration: 24
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.19it/s]
+
+Iteration 24, Test Acc: 0.9054974913597107
+Iteration 24, Violation: 0.11239588260650635
+Iteration: 24, Eopp: 0.030871075964533867
+Iteration: 25
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.19it/s]
+
+Iteration 25, Test Acc: 0.9054974913597107
+Iteration 25, Violation: 0.11263668537139893
+Iteration: 25, Eopp: 0.033986340762041656
+Iteration: 26
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.18it/s]
+
+Iteration 26, Test Acc: 0.9059782605904799
+Iteration 26, Violation: 0.10477519035339355
+Iteration: 26, Eopp: 0.04717828900071891
+Iteration: 27
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.16it/s]
+
+Iteration 27, Test Acc: 0.9047763375135568
+Iteration 27, Violation: 0.10193121433258057
+Iteration: 27, Eopp: 0.033333333333333326
+Iteration: 28
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.22it/s]
+
+Iteration 28, Test Acc: 0.9048965298212491
+Iteration 28, Violation: 0.10394799709320068
+Iteration: 28, Eopp: 0.04121734962856455
+Iteration: 29
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:06<00:00,  3.05it/s]
+
+Iteration 29, Test Acc: 0.9053772990520184
+Iteration 29, Violation: 0.10528004169464111
+Iteration: 29, Eopp: 0.044793913251857165
+
+Process finished with exit code 0

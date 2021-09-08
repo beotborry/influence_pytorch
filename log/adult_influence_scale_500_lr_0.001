@@ -1,0 +1,456 @@
+/Users/juhyeon/opt/anaconda3/envs/influence_weighting/bin/python3.9 /Users/juhyeon/Desktop/influence_pytorch/main.py
+-1
+Iteration: 0
+tensor([1., 1., 1.,  ..., 1., 1., 1.])
+100%|██████████| 20/20 [00:07<00:00,  2.63it/s]
+
+Iteration 0, Test Acc: 0.8091284180991352
+Iteration 0, Female Loss: 1.4555597305297852
+Iteration 0, Male Loss: 0.9350069165229797
+Iteration 0, Violation: 0.5205528140068054
+Eopp metrics: 0.2900741265148045
+Iteration: 1
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9295, 0.9542, 0.9673,  ..., 0.9475, 0.9901, 1.3435])
+100%|██████████| 20/20 [00:06<00:00,  3.07it/s]
+
+Iteration 1, Test Acc: 0.8402636717073619
+Iteration 1, Female Loss: 1.1777093410491943
+Iteration 1, Male Loss: 0.6932163238525391
+Iteration 1, Violation: 0.4844930171966553
+Eopp metrics: 0.3170949069254154
+Iteration: 2
+tensor([0.8737, 0.8753, 0.9689,  ..., 0.9499, 1.0053, 1.4744])
+100%|██████████| 20/20 [00:07<00:00,  2.72it/s]
+
+Iteration 2, Test Acc: 0.8476489256136119
+Iteration 2, Female Loss: 0.9395002126693726
+Iteration 2, Male Loss: 0.6254364252090454
+Iteration 2, Violation: 0.31406378746032715
+Eopp metrics: 0.19314850289426555
+Iteration: 3
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8926, 0.9403, 0.9837,  ..., 0.9552, 1.0105, 1.1775])
+100%|██████████| 20/20 [00:06<00:00,  3.14it/s]
+
+Iteration 3, Test Acc: 0.8523486326448619
+Iteration 3, Female Loss: 0.8699831366539001
+Iteration 3, Male Loss: 0.6665267944335938
+Iteration 3, Violation: 0.2034563422203064
+Eopp metrics: 0.09830196143755465
+Iteration: 4
+tensor([0.9399, 1.0473, 0.9942,  ..., 0.9596, 1.0055, 1.0707])
+100%|██████████| 20/20 [00:06<00:00,  3.04it/s]
+
+Iteration 4, Test Acc: 0.8532641599886119
+Iteration 4, Female Loss: 0.8682971000671387
+Iteration 4, Male Loss: 0.7388249635696411
+Iteration 4, Violation: 0.12947213649749756
+Eopp metrics: 0.04913900803731319
+Iteration: 5
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9816, 1.1653, 1.0014,  ..., 0.9665, 1.0006, 1.0268])
+100%|██████████| 20/20 [00:06<00:00,  2.94it/s]
+
+Iteration 5, Test Acc: 0.8544238279573619
+Iteration 5, Female Loss: 0.8840091228485107
+Iteration 5, Male Loss: 0.8102397322654724
+Iteration 5, Violation: 0.07376939058303833
+Eopp metrics: 0.0076656394453004095
+Iteration: 6
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([1.0139, 1.2664, 1.0073,  ..., 0.9730, 0.9978, 1.0117])
+100%|██████████| 20/20 [00:06<00:00,  3.11it/s]
+
+Iteration 6, Test Acc: 0.8524707029573619
+Iteration 6, Female Loss: 0.9065771102905273
+Iteration 6, Male Loss: 0.874196469783783
+Iteration 6, Violation: 0.032380640506744385
+Eopp metrics: 0.019019905884312682
+Iteration: 7
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([1.0367, 1.3389, 1.0123,  ..., 0.9786, 0.9966, 1.0038])
+100%|██████████| 20/20 [00:07<00:00,  2.73it/s]
+
+Iteration 7, Test Acc: 0.8503955076448619
+Iteration 7, Female Loss: 0.929368257522583
+Iteration 7, Male Loss: 0.9281435608863831
+Iteration 7, Violation: 0.0012246966361999512
+Eopp metrics: 0.04881106067546753
+Iteration: 8
+tensor([0.9157, 0.6952, 0.9469,  ..., 0.9792, 0.9663, 0.9632])
+100%|██████████| 20/20 [00:06<00:00,  3.15it/s]
+
+Iteration 8, Test Acc: 0.8439721679314971
+Iteration 8, Female Loss: 1.0199941396713257
+Iteration 8, Male Loss: 0.4960869550704956
+Iteration 8, Violation: 0.5239071846008301
+Eopp metrics: 0.2334943572231708
+Iteration: 9
+tensor([0.8193, 0.7223, 0.9541,  ..., 0.9519, 1.0108, 1.0491])
+100%|██████████| 20/20 [00:06<00:00,  3.18it/s]
+
+Iteration 9, Test Acc: 0.8454980468377471
+Iteration 9, Female Loss: 0.6964927315711975
+Iteration 9, Male Loss: 0.5247212052345276
+Iteration 9, Violation: 0.17177152633666992
+Eopp metrics: 0.0593053762545287
+Iteration: 10
+tensor([0.9546, 1.1209, 0.9930,  ..., 0.9532, 0.9981, 1.0047])
+100%|██████████| 20/20 [00:06<00:00,  3.07it/s]
+
+Iteration 10, Test Acc: 0.8569873045198619
+Iteration 10, Female Loss: 0.8464295268058777
+Iteration 10, Male Loss: 0.7756672501564026
+Iteration 10, Violation: 0.0707622766494751
+Eopp metrics: 0.016609753050430998
+Iteration: 11
+tensor([1.0222, 1.3806, 1.0060,  ..., 0.9705, 0.9888, 0.9912])
+100%|██████████| 20/20 [00:06<00:00,  3.14it/s]
+
+Iteration 11, Test Acc: 0.8506396482698619
+Iteration 11, Female Loss: 0.9199029207229614
+Iteration 11, Male Loss: 0.9399768710136414
+Iteration 11, Violation: 0.02007395029067993
+Eopp metrics: 0.0628253446050056
+Iteration: 12
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8939, 0.6321, 0.9272,  ..., 0.9593, 0.9523, 0.9535])
+100%|██████████| 20/20 [00:06<00:00,  3.13it/s]
+
+Iteration 12, Test Acc: 0.842011718545109
+Iteration 12, Female Loss: 1.001105785369873
+Iteration 12, Male Loss: 0.4484025239944458
+Iteration 12, Violation: 0.5527032613754272
+Eopp metrics: 0.23864677466372386
+Iteration: 13
+tensor([0.8296, 0.6787, 0.9495,  ..., 0.9528, 1.0146, 1.0368])
+100%|██████████| 20/20 [00:06<00:00,  3.07it/s]
+
+Iteration 13, Test Acc: 0.8430566405877471
+Iteration 13, Female Loss: 0.6675010919570923
+Iteration 13, Male Loss: 0.49351122975349426
+Iteration 13, Violation: 0.17398986220359802
+Eopp metrics: 0.06970182817640447
+Iteration: 14
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9624, 1.1480, 0.9917,  ..., 0.9479, 0.9943, 0.9977])
+100%|██████████| 20/20 [00:06<00:00,  3.18it/s]
+
+Iteration 14, Test Acc: 0.8560034180991352
+Iteration 14, Female Loss: 0.8533501029014587
+Iteration 14, Male Loss: 0.7909636497497559
+Iteration 14, Violation: 0.06238645315170288
+Eopp metrics: 0.036766543122475404
+Iteration: 15
+tensor([1.0213, 1.4652, 1.0043,  ..., 0.9686, 0.9837, 0.9842])
+100%|██████████| 20/20 [00:06<00:00,  3.11it/s]
+
+Iteration 15, Test Acc: 0.8481372068636119
+Iteration 15, Female Loss: 0.9387748837471008
+Iteration 15, Male Loss: 0.9916480779647827
+Iteration 15, Violation: 0.052873194217681885
+Eopp metrics: 0.10725648607004534
+Iteration: 16
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8761, 0.5853, 0.9046,  ..., 0.9351, 0.9329, 0.9356])
+100%|██████████| 20/20 [00:06<00:00,  3.08it/s]
+
+Iteration 16, Test Acc: 0.8349780272692442
+Iteration 16, Female Loss: 0.9798257350921631
+Iteration 16, Male Loss: 0.41518980264663696
+Iteration 16, Violation: 0.5646359324455261
+Eopp metrics: 0.24776891683671343
+Iteration: 17
+tensor([0.8452, 0.6563, 0.9496,  ..., 0.9525, 1.0186, 1.0360])
+100%|██████████| 20/20 [00:06<00:00,  3.21it/s]
+
+Iteration 17, Test Acc: 0.840119628701359
+Iteration 17, Female Loss: 0.6496771574020386
+Iteration 17, Male Loss: 0.4733961820602417
+Iteration 17, Violation: 0.17628097534179688
+Eopp metrics: 0.0721244742431183
+Iteration: 18
+tensor([0.9657, 1.1657, 0.9906,  ..., 0.9424, 0.9918, 0.9943])
+100%|██████████| 20/20 [00:06<00:00,  3.11it/s]
+
+Iteration 18, Test Acc: 0.8561328123323619
+Iteration 18, Female Loss: 0.8580079078674316
+Iteration 18, Male Loss: 0.7991036772727966
+Iteration 18, Violation: 0.05890423059463501
+Eopp metrics: 0.0406113355265898
+Iteration: 19
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([1.0159, 1.5323, 1.0015,  ..., 0.9664, 0.9798, 0.9797])
+100%|██████████| 20/20 [00:06<00:00,  3.08it/s]
+
+Iteration 19, Test Acc: 0.8482592771761119
+Iteration 19, Female Loss: 0.949803352355957
+Iteration 19, Male Loss: 1.0242478847503662
+Iteration 19, Violation: 0.07444453239440918
+Eopp metrics: 0.11463894557114895
+Iteration: 20
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8671, 0.5521, 0.8904,  ..., 0.9183, 0.9194, 0.9222])
+100%|██████████| 20/20 [00:06<00:00,  3.12it/s]
+
+Iteration 20, Test Acc: 0.8333300780504942
+Iteration 20, Female Loss: 0.9672391414642334
+Iteration 20, Male Loss: 0.3967718780040741
+Iteration 20, Violation: 0.5704672336578369
+Eopp metrics: 0.24279765127222752
+Iteration: 21
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8616, 0.6489, 0.9527,  ..., 0.9520, 1.0215, 1.0354])
+100%|██████████| 20/20 [00:06<00:00,  3.17it/s]
+
+Iteration 21, Test Acc: 0.840424804482609
+Iteration 21, Female Loss: 0.638791024684906
+Iteration 21, Male Loss: 0.46447211503982544
+Iteration 21, Violation: 0.17431890964508057
+Eopp metrics: 0.0690188647815767
+Iteration: 22
+tensor([0.9677, 1.1795, 0.9899,  ..., 0.9385, 0.9903, 0.9922])
+100%|██████████| 20/20 [00:06<00:00,  3.11it/s]
+
+Iteration 22, Test Acc: 0.8564379881136119
+Iteration 22, Female Loss: 0.8599820733070374
+Iteration 22, Male Loss: 0.8057841062545776
+Iteration 22, Violation: 0.05419796705245972
+Eopp metrics: 0.0458553700079124
+Iteration: 23
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([1.0115, 1.5753, 0.9989,  ..., 0.9651, 0.9772, 0.9769])
+100%|██████████| 20/20 [00:06<00:00,  3.13it/s]
+
+Iteration 23, Test Acc: 0.8470996092073619
+Iteration 23, Female Loss: 0.9549529552459717
+Iteration 23, Male Loss: 1.0460723638534546
+Iteration 23, Violation: 0.09111940860748291
+Eopp metrics: 0.13122371215591555
+Iteration: 24
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8642, 0.5335, 0.8836,  ..., 0.9087, 0.9115, 0.9142])
+100%|██████████| 20/20 [00:06<00:00,  3.02it/s]
+
+Iteration 24, Test Acc: 0.8329638671129942
+Iteration 24, Female Loss: 0.9622949361801147
+Iteration 24, Male Loss: 0.38831424713134766
+Iteration 24, Violation: 0.5739806890487671
+Eopp metrics: 0.24246762170490987
+Iteration: 25
+tensor([0.8751, 0.6544, 0.9557,  ..., 0.9510, 1.0227, 1.0348])
+100%|██████████| 20/20 [00:06<00:00,  2.88it/s]
+
+Iteration 25, Test Acc: 0.839143066201359
+Iteration 25, Female Loss: 0.6305923461914062
+Iteration 25, Male Loss: 0.4598054885864258
+Iteration 25, Violation: 0.17078685760498047
+Eopp metrics: 0.06577687086161665
+Iteration: 26
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9696, 1.1947, 0.9895,  ..., 0.9353, 0.9878, 0.9891])
+100%|██████████| 20/20 [00:07<00:00,  2.83it/s]
+
+Iteration 26, Test Acc: 0.8562548826448619
+Iteration 26, Female Loss: 0.864963710308075
+Iteration 26, Male Loss: 0.8171607851982117
+Iteration 26, Violation: 0.04780292510986328
+Eopp metrics: 0.05092866364052806
+Iteration: 27
+tensor([1.0085, 1.6168, 0.9969,  ..., 0.9641, 0.9754, 0.9750])
+100%|██████████| 20/20 [00:06<00:00,  3.09it/s]
+
+Iteration 27, Test Acc: 0.8453295896761119
+Iteration 27, Female Loss: 0.9610050320625305
+Iteration 27, Male Loss: 1.0671305656433105
+Iteration 27, Violation: 0.10612553358078003
+Eopp metrics: 0.15457668762753507
+Iteration: 28
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8573, 0.5302, 0.8745,  ..., 0.8977, 0.9017, 0.9045])
+100%|██████████| 20/20 [00:07<00:00,  2.84it/s]
+
+Iteration 28, Test Acc: 0.8313159178942442
+Iteration 28, Female Loss: 0.9534170627593994
+Iteration 28, Male Loss: 0.38057005405426025
+Iteration 28, Violation: 0.5728470087051392
+Eopp metrics: 0.23783783783783785
+Iteration: 29
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8820, 0.6582, 0.9587,  ..., 0.9507, 1.0241, 1.0347])
+100%|██████████| 20/20 [00:06<00:00,  2.93it/s]
+
+Iteration 29, Test Acc: 0.8371215821243823
+Iteration 29, Female Loss: 0.6240492463111877
+Iteration 29, Male Loss: 0.45707544684410095
+Iteration 29, Violation: 0.1669737994670868
+Eopp metrics: 0.06699391996002158
+Iteration: 30
+tensor([0.9687, 1.2157, 0.9887,  ..., 0.9324, 0.9851, 0.9861])
+100%|██████████| 20/20 [00:06<00:00,  3.24it/s]
+
+Iteration 30, Test Acc: 0.8562548826448619
+Iteration 30, Female Loss: 0.8696960210800171
+Iteration 30, Male Loss: 0.8294450044631958
+Iteration 30, Violation: 0.04025101661682129
+Eopp metrics: 0.05829967101153544
+Iteration: 31
+tensor([1.0056, 1.6142, 0.9948,  ..., 0.9633, 0.9734, 0.9728])
+100%|██████████| 20/20 [00:06<00:00,  3.26it/s]
+
+Iteration 31, Test Acc: 0.8450854490511119
+Iteration 31, Female Loss: 0.966637372970581
+Iteration 31, Male Loss: 1.088706612586975
+Iteration 31, Violation: 0.12206923961639404
+Eopp metrics: 0.1604120684629159
+Iteration: 32
+tensor([0.8505, 0.5199, 0.8666,  ..., 0.8879, 0.8927, 0.8955])
+100%|██████████| 20/20 [00:06<00:00,  3.18it/s]
+
+Iteration 32, Test Acc: 0.8298510741442442
+Iteration 32, Female Loss: 0.9459739327430725
+Iteration 32, Male Loss: 0.3741413950920105
+Iteration 32, Violation: 0.571832537651062
+Eopp metrics: 0.23166097530504304
+Iteration: 33
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8879, 0.6543, 0.9616,  ..., 0.9511, 1.0253, 1.0347])
+100%|██████████| 20/20 [00:06<00:00,  3.12it/s]
+
+Iteration 33, Test Acc: 0.8364428710192442
+Iteration 33, Female Loss: 0.6180039644241333
+Iteration 33, Male Loss: 0.4551832377910614
+Iteration 33, Violation: 0.1628207266330719
+Eopp metrics: 0.06866593095406659
+Iteration: 34
+tensor([0.9682, 1.2330, 0.9876,  ..., 0.9298, 0.9830, 0.9838])
+100%|██████████| 20/20 [00:06<00:00,  3.25it/s]
+
+Iteration 34, Test Acc: 0.8559497068636119
+Iteration 34, Female Loss: 0.8714988827705383
+Iteration 34, Male Loss: 0.8394147753715515
+Iteration 34, Violation: 0.032084107398986816
+Eopp metrics: 0.06059738474992715
+Iteration: 35
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([1.0035, 1.6457, 0.9924,  ..., 0.9623, 0.9713, 0.9706])
+100%|██████████| 20/20 [00:06<00:00,  3.24it/s]
+
+Iteration 35, Test Acc: 0.8444750974886119
+Iteration 35, Female Loss: 0.9723249077796936
+Iteration 35, Male Loss: 1.1103546619415283
+Iteration 35, Violation: 0.13802975416183472
+Eopp metrics: 0.1696258276766751
+Iteration: 36
+tensor([0.8435, 0.5127, 0.8588,  ..., 0.8784, 0.8841, 0.8867])
+100%|██████████| 20/20 [00:06<00:00,  3.20it/s]
+
+Iteration 36, Test Acc: 0.8289965819567442
+Iteration 36, Female Loss: 0.9382217526435852
+Iteration 36, Male Loss: 0.3687315285205841
+Iteration 36, Violation: 0.5694901943206787
+Eopp metrics: 0.23258235122641902
+Iteration: 37
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8952, 0.6574, 0.9646,  ..., 0.9521, 1.0265, 1.0346])
+100%|██████████| 20/20 [00:07<00:00,  2.81it/s]
+
+Iteration 37, Test Acc: 0.8357714843004942
+Iteration 37, Female Loss: 0.6144492626190186
+Iteration 37, Male Loss: 0.45607542991638184
+Iteration 37, Violation: 0.15837383270263672
+Eopp metrics: 0.06511681172698125
+Iteration: 38
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9676, 1.2469, 0.9866,  ..., 0.9279, 0.9808, 0.9814])
+100%|██████████| 20/20 [00:06<00:00,  3.03it/s]
+
+Iteration 38, Test Acc: 0.8561328123323619
+Iteration 38, Female Loss: 0.8744532465934753
+Iteration 38, Male Loss: 0.8509652018547058
+Iteration 38, Violation: 0.02348804473876953
+Eopp metrics: 0.06474930246116684
+Iteration: 39
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9149, 0.5481, 0.9256,  ..., 0.9535, 0.9457, 0.9465])
+100%|██████████| 20/20 [00:06<00:00,  2.86it/s]
+
+Iteration 39, Test Acc: 0.8338793944567442
+Iteration 39, Female Loss: 1.0513408184051514
+Iteration 39, Male Loss: 0.4023660123348236
+Iteration 39, Violation: 0.6489747762680054
+Eopp metrics: 0.2565048098946403
+Iteration: 40
+tensor([0.9043, 0.5992, 0.9525,  ..., 0.9405, 1.0142, 1.0242])
+100%|██████████| 20/20 [00:06<00:00,  3.00it/s]
+
+Iteration 40, Test Acc: 0.8300952147692442
+Iteration 40, Female Loss: 0.6056331396102905
+Iteration 40, Male Loss: 0.4313836395740509
+Iteration 40, Violation: 0.17424950003623962
+Eopp metrics: 0.0767532170074543
+Iteration: 41
+tensor([0.9638, 1.1976, 0.9859,  ..., 0.9269, 0.9868, 0.9877])
+100%|██████████| 20/20 [00:06<00:00,  2.95it/s]
+
+Iteration 41, Test Acc: 0.8567431638948619
+Iteration 41, Female Loss: 0.8589246869087219
+Iteration 41, Male Loss: 0.8175118565559387
+Iteration 41, Violation: 0.0414128303527832
+Eopp metrics: 0.049563777953608446
+Iteration: 42
+tensor([0.9977, 1.6554, 0.9885,  ..., 0.9591, 0.9694, 0.9689])
+100%|██████████| 20/20 [00:07<00:00,  2.76it/s]
+
+Iteration 42, Test Acc: 0.8446582029573619
+Iteration 42, Female Loss: 0.9647364616394043
+Iteration 42, Male Loss: 1.1080623865127563
+Iteration 42, Violation: 0.14332592487335205
+Eopp metrics: 0.18410652563194935
+Iteration: 43
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.8424, 0.5000, 0.8590,  ..., 0.8756, 0.8810, 0.8834])
+100%|██████████| 20/20 [00:06<00:00,  3.28it/s]
+
+Iteration 43, Test Acc: 0.8275317382067442
+Iteration 43, Female Loss: 0.9371120929718018
+Iteration 43, Male Loss: 0.36626625061035156
+Iteration 43, Violation: 0.5708458423614502
+Eopp metrics: 0.2228678215966352
+Iteration: 44
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9051, 0.6503, 0.9691,  ..., 0.9524, 1.0269, 1.0340])
+100%|██████████| 20/20 [00:09<00:00,  2.02it/s]
+
+Iteration 44, Test Acc: 0.8343066405504942
+Iteration 44, Female Loss: 0.6112492084503174
+Iteration 44, Male Loss: 0.4577386975288391
+Iteration 44, Violation: 0.15351051092147827
+Eopp metrics: 0.06724378461666602
+Iteration: 45
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9691, 1.2615, 0.9851,  ..., 0.9253, 0.9792, 0.9797])
+100%|██████████| 20/20 [00:08<00:00,  2.41it/s]
+
+Iteration 45, Test Acc: 0.8558276365511119
+Iteration 45, Female Loss: 0.8750365376472473
+Iteration 45, Male Loss: 0.8607189655303955
+Iteration 45, Violation: 0.014317572116851807
+Eopp metrics: 0.06874193145379581
+Iteration: 46
+ 20%|██        | 4/20 [00:01<00:06,  2.44it/s]tensor([0.9116, 0.5323, 0.9220,  ..., 0.9477, 0.9409, 0.9416])
+100%|██████████| 20/20 [00:07<00:00,  2.51it/s]
+
+Iteration 46, Test Acc: 0.8326586913317442
+Iteration 46, Female Loss: 1.0455374717712402
+Iteration 46, Male Loss: 0.39599162340164185
+Iteration 46, Violation: 0.6495458483695984
+Eopp metrics: 0.25247782451172285
+Iteration: 47
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9098, 0.5932, 0.9564,  ..., 0.9408, 1.0149, 1.0239])
+100%|██████████| 20/20 [00:07<00:00,  2.74it/s]
+
+Iteration 47, Test Acc: 0.8284472655504942
+Iteration 47, Female Loss: 0.5993725657463074
+Iteration 47, Male Loss: 0.43113040924072266
+Iteration 47, Violation: 0.16824215650558472
+Eopp metrics: 0.06674301420064133
+Iteration: 48
+tensor([0.9627, 1.2149, 0.9843,  ..., 0.9237, 0.9843, 0.9850])
+100%|██████████| 20/20 [00:06<00:00,  3.22it/s]
+
+Iteration 48, Test Acc: 0.8566821287386119
+Iteration 48, Female Loss: 0.8613651394844055
+Iteration 48, Male Loss: 0.8313859105110168
+Iteration 48, Violation: 0.029979228973388672
+Eopp metrics: 0.058322575271727795
+Iteration: 49
+  0%|          | 0/20 [00:00<?, ?it/s]tensor([0.9201, 0.5402, 0.9288,  ..., 0.9556, 0.9466, 0.9471])
+100%|██████████| 20/20 [00:06<00:00,  3.21it/s]
+
+Iteration 49, Test Acc: 0.8332080077379942
+Iteration 49, Female Loss: 1.0629006624221802
+Iteration 49, Male Loss: 0.40171101689338684
+Iteration 49, Violation: 0.6611896753311157
+Eopp metrics: 0.25248927664181897
+
+5 111.46152047122246
+
+Process finished with exit code 0

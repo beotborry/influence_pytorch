@@ -1,6 +1,7 @@
 import torch
-from dataloader import get_data, CustomDataset
-from utils import split_dataset
+from adult_dataloader import get_data
+from adult_dataloader import CustomDataset
+from utils import split_dataset_multi, get_eopp_idx
 import numpy as np
 from mlp import MLP
 from torch.optim import SGD
@@ -8,41 +9,27 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from sklearn.metrics import confusion_matrix
+import time
 
 
 
 X_train, y_train, X_test, y_test, protected_train, protected_test = get_data()
 
+z_groups_train, t_groups_train = split_dataset_multi(X_train, y_train, protected_train)
+z_groups_test, t_groups_test = split_dataset_multi(X_test, y_test, protected_test)
 
-X_female_train, y_female_train = split_dataset(X_train, y_train, protected_train[0])
-X_male_train, y_male_train = split_dataset(X_train, y_train, protected_train[1])
-X_male_train = torch.FloatTensor(X_male_train)
-y_male_train = torch.LongTensor(y_male_train)
-X_female_train = torch.FloatTensor(X_female_train)
-y_female_train = torch.LongTensor(y_female_train)
-
-female_1_idx_train = np.where(y_female_train.numpy() == 1)
-male_1_idx_train = np.where(y_male_train.numpy() == 1)
-
-X_female_test, y_female_test = split_dataset(X_test, y_test, protected_test[0])
-X_male_test, y_male_test = split_dataset(X_test, y_test, protected_test[1])
-X_male_test = torch.FloatTensor(X_male_test)
-y_male_test = torch.LongTensor(y_male_test)
-X_female_test = torch.FloatTensor(X_female_test)
-y_female_test = torch.LongTensor(y_female_test)
-
-female_1_idx_test = np.where(y_female_test.numpy() == 1)
-male_1_idx_test = np.where(y_male_test.numpy() == 1)
+eopp_idx_train = get_eopp_idx(t_groups_train)
+eopp_idx_test = get_eopp_idx(t_groups_test)
 
 X_train = torch.FloatTensor(X_train)
 y_train = torch.LongTensor(y_train)
 X_test = torch.FloatTensor(X_test)
 y_test = torch.LongTensor(y_test)
 
-num_features = 122
+num_features = X_train.shape[1]
 
 model = MLP(
-    feature_size=122,
+    feature_size=num_features,
     hidden_dim=50,
     num_classes=2,
     num_layer=2
@@ -63,25 +50,25 @@ gpu = 1 if torch.cuda.is_available() else -1
 print(gpu)
 
 def get_error_and_violations(y_pred, y, protected_attributes):
-  acc = np.mean(y_pred != y)
-  violations = []
-  for p in protected_attributes:
-    protected_idxs = np.where(np.logical_and(p > 0, y > 0))
-    positive_idxs = np.where(y > 0)
-    violations.append(np.mean(y_pred[positive_idxs]) - np.mean(y_pred[protected_idxs]))
-  return acc, violations
+    acc = np.mean(y_pred != y)
+    violations = []
+    for p in protected_attributes:
+        protected_idxs = np.where(np.logical_and(p > 0, y > 0))
+        positive_idxs = np.where(y > 0)
+        violations.append(np.mean(y_pred[positive_idxs]) - np.mean(y_pred[protected_idxs]))
+    return acc, violations
 
 
 def debias_weights(original_labels, protected_attributes, multipliers):
-  exponents = np.zeros(len(original_labels))
-  for i, m in enumerate(multipliers):
-    exponents -= m * protected_attributes[i]
-  weights = np.exp(exponents)/ (np.exp(exponents) + np.exp(-exponents))
-  #weights = np.where(predicted > 0, weights, 1 - weights)
-  weights = np.where(original_labels > 0, 1 - weights, weights)
-  return weights
+    exponents = np.zeros(len(original_labels))
+    for i, m in enumerate(multipliers):
+        exponents -= m * protected_attributes[i]
+    weights = np.exp(exponents)/ (np.exp(exponents) + np.exp(-exponents))
+    #weights = np.where(predicted > 0, weights, 1 - weights)
+    weights = np.where(original_labels > 0, 1 - weights, weights)
+    return weights
 
-iteration = 50
+iteration = 30
 epochs = 20
 max_iter = 0
 max_tradeoff = 0
@@ -90,6 +77,7 @@ multipliers = np.zeros(len(protected_train))
 weights = np.array([1] * X_train.shape[0])
 eta = 1.
 
+start = time.time()
 for iter in range(iteration):
     print("Iteration: {}".format(iter))
     if iter == 0: weights = torch.tensor(np.array([1] * X_train.shape[0]))
@@ -126,33 +114,56 @@ for iter in range(iteration):
 
         print("Iteration {}, Test Acc: {}".format(iter, accuracy / i))
 
-    if gpu >= 0: X_female_train, y_female_train, X_male_train, y_male_train = X_female_train.cuda(), y_female_train.cuda(), X_male_train.cuda(), y_male_train.cuda()
+    if gpu >= 0: z_groups_train, t_groups_train = z_groups_train.cuda(), t_groups_train.cuda()
 
-    female_loss = nn.CrossEntropyLoss()(model(X_female_test[female_1_idx_test]), y_female_test[female_1_idx_test])
-    print("Iteration {}, Female Loss: {}".format(iter, female_loss))
+    group_loss = []
+    for g in range(len(protected_test)):
+        _X = z_groups_test[g]
+        _y = t_groups_test[g]
+        _idx = eopp_idx_test[g]
 
-    male_loss = nn.CrossEntropyLoss()(model(X_male_test[male_1_idx_test]), y_male_test[male_1_idx_test])
-    print("Iteration {}, Male Loss: {}".format(iter, male_loss))
+        group_loss.append(nn.CrossEntropyLoss()(model(_X[_idx]), _y[_idx]))
 
-    violation = abs(male_loss - female_loss)
+    violation = 0
+    for i in range(len(group_loss) - 1):
+        _violation = abs(group_loss[i] - group_loss[i + 1])
+        violation = max(_violation, violation)
+
     print("Iteration {}, Violation: {}".format(iter, violation))
 
-    female_confusion_mat = confusion_matrix(y_female_test.detach().numpy(),
-                                            model(X_female_test).argmax(dim=1).detach().numpy()).ravel()
-    male_confusion_mat = confusion_matrix(y_male_test.detach().numpy(),
-                                          model(X_male_test).argmax(dim=1).detach().numpy()).ravel()
+    group_confusion_matrix = []
 
-    _, _, f_fn, f_tp = female_confusion_mat
-    _, _, m_fn, m_tp = male_confusion_mat
+    for g in range(len(protected_test)):
+        _X = z_groups_test[g]
+        _y = t_groups_test[g]
+        confusion_mat = confusion_matrix(_y.detach().numpy(),
+                                         model(_X).argmax(dim=1).detach().numpy()).ravel()
+        group_confusion_matrix.append(confusion_mat)
 
-    eopp_metrics = abs(f_tp / (f_fn + f_tp) - m_tp / (m_fn + m_tp))
-    print("Eopp metrics: {}".format(abs(eopp_metrics)))
+    eopp_metrics = []
+    for i in range(len(group_confusion_matrix)):
+        for j in range(len(group_confusion_matrix)):
+            if i != j:
+                _, _, fn_1, tp_1 = group_confusion_matrix[i]
+                _, _, fn_2, tp_2 = group_confusion_matrix[j]
 
-    if (accuracy / i) / eopp_metrics > max_tradeoff:
-        max_tradeoff = (accuracy / i) / eopp_metrics
+                _metrics = abs(tp_1 / (fn_1 + tp_1) - tp_2 / (fn_2 + tp_2))
+                eopp_metrics.append(_metrics)
+
+    eopp_metric = max(eopp_metrics)
+
+    print("Iteration: {}, Eopp: {}".format(iter, eopp_metric))
+
+    _tradeoff = accuracy / eopp_metric
+
+    if _tradeoff > max_tradeoff:
         max_iter = iter
-        torch.save(model, "./model/reweighting2")
+        max_tradeoff = _tradeoff
+        #torch.save(model, "./model/bank_reweighting_best")
 
-print(max_iter, max_tradeoff)
+print("max_iter: {}, max_tradeoff: {}".format(max_iter, max_tradeoff))
+end = time.time()
+print((end - start) / 60)
+
 
 
