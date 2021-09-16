@@ -131,6 +131,15 @@ def main():
         print("Iteration {}, Fairness metric: {}%".format(_iter, fairness_metric * 100))
 
 
+    if method == 'naive':
+        influence_scores = torch.tensor(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
+                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint))
+
+        
+
+
 if __name__ == '__main__':
     main()
+
+
 

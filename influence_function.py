@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 from utils import calc_loss_diff
 
+
 def grad_z(z, t, model, gpu=-1):
     """Calculates the gradient z. One grad_z should be computed for each
     training sample.
