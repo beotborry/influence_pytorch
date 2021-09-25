@@ -15,7 +15,6 @@ class LinearModel(nn.Module):
 
         self.dropout = nn.Dropout(0.25)
 
-
     def forward(self, xin):
         x = F.relu(self.lin1(xin))
 

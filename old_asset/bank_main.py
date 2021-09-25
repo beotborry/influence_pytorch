@@ -8,7 +8,7 @@ import torch.nn as nn
 from sklearn.metrics import confusion_matrix
 from tqdm import tqdm
 from torch.utils.data import DataLoader
-from influence_function import avg_s_test_multi, calc_influence
+from influence_function import avg_s_test, calc_influence
 
 X_train, y_train, X_test, y_test, protected_train, protected_test = get_data()
 
@@ -49,7 +49,8 @@ print(gpu)
 def calc_influence_dataset(X, y, z_groups, t_groups,
                            model, train_loader, gpu):
 
-    s_test_vec = avg_s_test_multi(z_groups=z_groups, t_groups=t_groups, idxs = eopp_idx_train, model=model, z_loader=train_loader, gpu=gpu, r=8)
+    s_test_vec = avg_s_test(z_groups=z_groups, t_groups=t_groups, idxs=eopp_idx_train, model=model,
+                            z_loader=train_loader, gpu=gpu, r=8)
 
     influences = []
     for z, t in zip(X, y):
@@ -138,7 +139,7 @@ for iter in range(iteration):
     if _tradeoff > max_tradeoff and iter >= 3:
         max_iter = iter
         max_tradeoff = _tradeoff
-        torch.save(model, "model/bank_influence_best")
+        torch.save(model, "../model/bank_influence_best")
 
 print("max_iter:{}, max_tradeoff:{}".format(max_iter, max_tradeoff))
 

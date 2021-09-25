@@ -87,7 +87,10 @@ iteration = 30
 
 max_iter = 0
 max_tradeoff = 0
-scale_factor = 150
+scale_factor = 350
+
+base_acc = 85.86
+base_eopp = 10.73
 
 start = time.time()
 for iter in range(iteration):
@@ -152,8 +155,9 @@ for iter in range(iteration):
     print("Eopp metrics: {}".format(abs(eopp_metrics)))
     #print(female_confusion_mat, male_confusion_mat)
 
-    if (accuracy / i) / eopp_metrics > max_tradeoff and iter >= 2:
-        max_tradeoff = (accuracy / i) / eopp_metrics
+    trade_off = abs(eopp_metrics - base_eopp) / abs((accuracy / i) - base_acc)
+    if trade_off > max_tradeoff and iter >= 2:
+        max_tradeoff = trade_off
         max_iter = iter
         #torch.save(model, "./model/influence4")
 

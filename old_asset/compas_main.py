@@ -3,7 +3,7 @@ import torch
 from torch.optim import SGD, Adam
 from utils import split_dataset_multi, exp_normalize, get_eopp_idx
 from mlp import MLP
-from influence_function import avg_s_test_multi
+from influence_function import avg_s_test
 from tqdm import tqdm
 import torch.nn as nn
 from influence_function import calc_influence
@@ -55,7 +55,8 @@ print(gpu)
 def calc_influence_dataset(X, y, z_groups, t_groups,
                            model, train_loader, gpu):
 
-    s_test_vec = avg_s_test_multi(z_groups=z_groups, t_groups=t_groups, idxs = eopp_idx_train, model=model, z_loader=train_loader, gpu=gpu, r=3)
+    s_test_vec = avg_s_test(z_groups=z_groups, t_groups=t_groups, idxs=eopp_idx_train, model=model,
+                            z_loader=train_loader, gpu=gpu, r=1)
 
     influences = []
     for z, t in zip(X, y):
@@ -67,6 +68,11 @@ iteration = 30
 max_iter = 0
 max_tradeoff = 0
 
+base_acc = 69.34
+base_eopp = 24.51
+
+scale_factor = 22
+
 
 for iter in range(iteration):
     print("Iteration: {}".format(iter))
@@ -74,7 +80,7 @@ for iter in range(iteration):
     else:
         weights = torch.tensor(calc_influence_dataset(X_train, y_train, z_groups_train, t_groups_train,
                                                       model, train_loader, gpu = gpu))
-    weights = exp_normalize(weights)
+    weights = exp_normalize(weights, scale_factor)
     print(weights)
     for epoch in tqdm(range(20)):
         model.train()
@@ -103,8 +109,8 @@ for iter in range(iteration):
             y_pred = model(z)
             accuracy += (((y_pred.argmax(dim=1) == t).sum()) / len(t)).item()
             i = i + 1
-
-        print("Iteration {}, Test Acc: {}".format(iter, accuracy / i))
+        accuracy = accuracy / i
+        print("Iteration {}, Test Acc: {}".format(iter, accuracy))
 
     if gpu >= 0: z_groups_train, t_groups_train = z_groups_train.cuda(), t_groups_train.cuda()
 
@@ -139,12 +145,12 @@ for iter in range(iteration):
 
     print("Iteration: {}, Eopp: {}".format(iter, eopp_metrics))
 
-    _tradeoff = accuracy / eopp_metrics
+    _tradeoff = abs(eopp_metrics - base_eopp) / abs(accuracy - base_acc)
 
     if _tradeoff > max_tradeoff and iter >= 3:
         max_iter = iter
         max_tradeoff = _tradeoff
-        torch.save(model, "model/compas_influence_best2")
+        #torch.save(model, "model/compas_influence_best2")
 
 print("max_iter:{}, max_tradeoff:{}".format(max_iter, max_tradeoff))
 

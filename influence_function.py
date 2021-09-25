@@ -2,7 +2,7 @@ from torch.autograd import grad
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
-import numpy as np
+from utils import calc_loss_diff
 
 
 def grad_z(z, t, model, gpu=-1):
@@ -33,16 +33,9 @@ def grad_z(z, t, model, gpu=-1):
     params = [p for p in model.parameters() if p.requires_grad]
     return list(grad(loss, params, create_graph=True))
 
-def s_test_multi(z_groups, t_groups, idxs, model, z_loader, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1):
+def s_test(z_groups, t_groups, idxs, model, z_loader, constraint, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1):
     model.eval()
-
-    losses = torch.zeros(len(z_groups))
-    i = 0
-    for z_group, t_group, idx in zip(z_groups, t_groups, idxs):
-        losses[i] = nn.CrossEntropyLoss()(model(z_group[idx]), t_group[idx])
-        i += 1
-
-    violation = abs(losses[0] - losses[1])
+    violation = calc_loss_diff(constraint, z_groups, t_groups, idxs, model)
 
     params = [p for p in model.parameters() if p.requires_grad]
     v = list(grad(violation, params, create_graph=True))
@@ -62,55 +55,12 @@ def s_test_multi(z_groups, t_groups, idxs, model, z_loader, recursion_depth=5000
             break
     return h_estimate
 
-
-def s_test(z_group1, t_group1, z_group2, t_group2, model, z_loader, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1):
-    model.eval()
-
-    group1_loss = nn.CrossEntropyLoss()(model(z_group1), t_group1)
-    group2_loss = nn.CrossEntropyLoss()(model(z_group2), t_group2)
-
-    violation = abs(group1_loss - group2_loss)
-
-    params = [p for p in model.parameters() if p.requires_grad]
-    v = list(grad(violation, params, create_graph=True))
-    h_estimate = v.copy()
-    for i in range(recursion_depth):
-        for x, t in z_loader:
-            if gpu >= 0:
-                x, t = x.cuda(), t.cuda()
-            y = model(x)
-            y = F.softmax(y, dim=0)
-            loss = torch.nn.functional.cross_entropy(y, t)
-            hv = hvp(loss, params, h_estimate)
-            with torch.no_grad():
-                h_estimate = [
-                    _v + (1 - damp) * _h_e - _hv / scale
-                    for _v, _h_e, _hv in zip(v, h_estimate, hv)]
-            break
-    return h_estimate
-
-def avg_s_test(z_group1, t_group1, z_group2, t_group2, model, z_loader, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1, r=1):
+def avg_s_test(z_groups, t_groups, idxs, model, z_loader, constraint, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1, r=1):
     s_test_vec_list = []
     for i in range(r):
-        s_test_vec_list.append(s_test(
-            z_group1=z_group1, t_group1=t_group1, z_group2=z_group2, t_group2=t_group2, model=model,
-            z_loader=z_loader, recursion_depth=recursion_depth, damp=damp, scale=scale, gpu=gpu
-        ))
-    s_test_vec = s_test_vec_list[0]
-    for i in range(1, r):
-        s_test_vec += s_test_vec_list[i]
-
-    s_test_vec = [i / r for i in s_test_vec]
-
-    return s_test_vec
-
-def avg_s_test_multi(z_groups, t_groups, idxs, model, z_loader, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1, r=1):
-    s_test_vec_list = []
-    for i in range(r):
-        s_test_vec_list.append(s_test_multi(
-            z_groups=z_groups, t_groups=t_groups, idxs = idxs,  model=model, z_loader=z_loader, recursion_depth=recursion_depth,
-            damp=damp, scale=scale, gpu=gpu
-        ))
+        s_test_vec_list.append(s_test(z_groups=z_groups, t_groups=t_groups, idxs=idxs, model=model, z_loader=z_loader,
+                                      constraint=constraint,
+                                      recursion_depth=recursion_depth, damp=damp, scale=scale, gpu=gpu))
     s_test_vec = s_test_vec_list[0]
     for i in range(1, r):
         s_test_vec += s_test_vec_list[i]
@@ -140,15 +90,14 @@ def hvp(y, w, v):
 
     # First backprop
     first_grads = grad(y, w, retain_graph=True, create_graph=True)
-
     # Elementwise products
     elemwise_products = 0
     for grad_elem, v_elem in zip(first_grads, v):
         elemwise_products += torch.sum(grad_elem * v_elem)
 
     # Second backprop
-
     return_grads = grad(elemwise_products, w, create_graph=True)
+
 
     return return_grads
 
@@ -161,3 +110,12 @@ def calc_influence(z, t, s_test, model, z_loader, gpu = -1):
     ]) / len(z_loader.dataset)
 
     return influence
+
+def calc_influence_dataset(X, y, idxs, z_groups, t_groups, model, z_loader, gpu, constraint, r=1):
+    s_test_vec = avg_s_test(z_groups=z_groups, t_groups=t_groups, idxs=idxs, model=model, z_loader=z_loader, gpu=gpu,
+                            constraint=constraint,
+                            r=r)
+    influences = []
+    for z, t in zip(X, y):
+        influences.append(calc_influence(z, t, s_test_vec, model, z_loader, gpu=gpu))
+    return influences
