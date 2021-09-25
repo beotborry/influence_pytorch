@@ -2,8 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from sklearn.metrics import confusion_matrix
-
-
+import os
 
 def split_dataset(features, labels, protected_attributes):
     '''
@@ -81,13 +80,27 @@ def calc_loss_diff(constraint, z_groups, t_groups, idxs, model):
         return max(abs(losses[0] - losses[2]), abs(losses[1]) - losses[3])
 
     elif constraint == 'dp':
-        losses = []
+        # group idx, y_label
+
+        m_arr = [] #m_00, m_01, m_10, m_11
+        for idx in idxs:
+            m_arr.append(len(idx[0]))
+            m_arr.append(len(idx[1]))
+
+        losses = [] #L_00, L_01, L_10, L_11
         for z_group, t_group, idx in zip(z_groups, t_groups, idxs):
             loss_0 = nn.CrossEntropyLoss()(model(z_group[idx[0]]), t_group[idx[0]])
             loss_1 = nn.CrossEntropyLoss()(model(z_group[idx[1]]), t_group[idx[1]])
             losses.append(loss_0)
             losses.append(loss_1)
-        return max(abs(losses[0] - losses[1]), abs(losses[2] - losses[3]))
+
+        L_p_01 = (m_arr[1] / (m_arr[0] + m_arr[1])) * losses[1]
+        L_p_11 = (m_arr[3] / (m_arr[2] + m_arr[3])) * losses[3]
+        L_p_00 = (m_arr[0] / (m_arr[0] + m_arr[1])) * losses[0]
+        L_p_10 = (m_arr[2] / (m_arr[2] + m_arr[3])) * losses[2]
+
+        c = (m_arr[0] / (m_arr[0] + m_arr[1])) - (m_arr[2] / (m_arr[2] + m_arr[3]))
+        return max(abs(L_p_01 - L_p_11), max(L_p_00 - L_p_10 - c, c + L_p_10 - L_p_00))
 
 def calc_fairness_metric(constraint, z_groups, t_groups, model):
     '''
@@ -182,5 +195,39 @@ def debias_weights(constraint, original_labels, protected_attributes, multiplier
 
 
 
+def list_files(root, suffix, prefix=False):
+    root = os.path.expanduser(root)
+    files = list(
+        filter(
+            lambda p: os.path.isfile(os.path.join(root, p)) and p.endswith(suffix),
+            os.listdir(root)
+        )
+    )
 
+    if prefix is True:
+        files = [os.path.join(root, d) for d in files]
 
+    return files
+
+def get_accuracy(outputs, labels, binary=False, sigmoid_output=False, reduction='mean'):
+    #if multi-label classification
+    if len(labels.size())>1:
+        outputs = (outputs>0.0).float()
+        correct = ((outputs==labels)).float().sum()
+        total = torch.tensor(labels.shape[0] * labels.shape[1], dtype=torch.float)
+        avg = correct / total
+        return avg.item()
+    if binary:
+        if sigmoid_output:
+            predictions = (outputs >= 0.5).float()
+        else:
+            predictions = (torch.sigmoid(outputs) >= 0.5).float()
+    else:
+        predictions = torch.argmax(outputs, 1)
+    c = (predictions == labels).float().squeeze()
+
+    if reduction == 'none':
+        return c
+    else:
+        accuracy = torch.mean(c)
+        return accuracy.item()

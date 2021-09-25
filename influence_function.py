@@ -90,15 +90,14 @@ def hvp(y, w, v):
 
     # First backprop
     first_grads = grad(y, w, retain_graph=True, create_graph=True)
-
     # Elementwise products
     elemwise_products = 0
     for grad_elem, v_elem in zip(first_grads, v):
         elemwise_products += torch.sum(grad_elem * v_elem)
 
     # Second backprop
-
     return_grads = grad(elemwise_products, w, create_graph=True)
+
 
     return return_grads
 

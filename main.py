@@ -9,9 +9,7 @@ from torch.utils.data import DataLoader
 from influence_function import calc_influence_dataset
 from tqdm import tqdm
 from argument import get_args
-
-
-
+from time import time
 
 def main():
     args = get_args()
@@ -60,12 +58,15 @@ def main():
     constraint_idx_train = get_idx(y_groups_train)
     constraint_idx_test = get_idx(y_groups_test)
 
-    model = MLP(
-        feature_size=X_train.shape[1],
-        hidden_dim=50,
-        num_classes=2,
-        num_layer=2
-    )
+    if dataset in ("compas", "adult", "bank"):
+        model = MLP(
+            feature_size=X_train.shape[1],
+            hidden_dim=50,
+            num_classes=2,
+            num_layer=2
+        )
+    elif dataset in ("UTKFace_preprocessed"):
+        model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
 
     optimizer = SGD(model.parameters(), lr=0.001)
     criterion = nn.CrossEntropyLoss(reduction='none')
@@ -82,14 +83,17 @@ def main():
     naive_acc = 0
     naive_vio = 0
 
-    scale_factor = 3
+    scale_factor = 50
 
     for _iter in range(iteration):
         print("Iteration: {}".format(_iter))
         if _iter == 0 or method == 'naive': weights = torch.ones(len(X_train))
         elif method == 'influence' and _iter >= 1:
+            start = time()
             weights = torch.tensor(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
-                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint))
+                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint, r=7))
+            end = time()
+            print("Elapsed time for calculating weights {}".format(end-start))
             weights = exp_normalize(weights, scale_factor)
         elif method == 'reweighting' and _iter >= 1:
             weights = torch.tensor(debias_weights(fairness_constraint, y_train, protected_train, multipliers))
@@ -132,10 +136,11 @@ def main():
 
 
     if method == 'naive':
-        influence_scores = torch.tensor(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
+        influence_scores = np.array(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
                                                             model, train_loader, gpu=gpu, constraint=fairness_constraint))
-
-        
+        top_10_idx = np.argpartition(influence_scores, -10)[-10:]
+        print(top_10_idx)
+        print(X_train[top_10_idx])
 
 
 if __name__ == '__main__':
