@@ -11,7 +11,7 @@ class DataloaderFactory:
 
     @staticmethod
     def get_dataloader(name, img_size=224, batch_size=256, seed=0, num_workers=4,
-                       target='Smiling', skew_ratio=1., labelwise=False):
+                       target='Attractive', skew_ratio=1., labelwise=False):
 
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                          std=[0.229, 0.224, 0.225])

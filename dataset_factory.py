@@ -1,4 +1,5 @@
 from utkface_dataloader import UTKFaceDataset
+from celeba_dataloader import CelebA
 
 class DatasetFactory:
     def __init__(self):
@@ -11,3 +12,7 @@ class DatasetFactory:
             root = './data/utkface_aligned_cropped/UTKFace_preprocessed'
             return UTKFaceDataset(root=root, split=split, transform=transform,
                                   labelwise=labelwise)
+        elif name == "celeba":
+            root = './data'
+            print(target)
+            return CelebA(root=root, split=split, transform=transform, target_attr=target, labelwise=labelwise, download=True)
