@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import confusion_matrix
 import os
+from tqdm import tqdm
 
 def split_dataset(features, labels, protected_attributes):
     '''
@@ -31,7 +32,7 @@ def get_eopp_idx(t_groups):
     '''
     ret = []
     for t_group in t_groups:
-        idx = np.where(t_group.numpy() == 1)
+        idx = np.where(t_group.numpy() == 1)[0]
         ret.append(idx)
     return ret
 
@@ -43,8 +44,8 @@ def get_eo_idx(t_groups):
     ret = []
     for t_group in t_groups:
         tmp = []
-        idx_0 = np.where(t_group.numpy() == 0)
-        idx_1 = np.where(t_group.numpy() == 1)
+        idx_0 = np.where(t_group.numpy() == 0)[0]
+        idx_1 = np.where(t_group.numpy() == 1)[0]
         tmp.append(idx_0)
         tmp.append(idx_1)
         ret.append(tmp)
@@ -232,28 +233,26 @@ def get_accuracy(outputs, labels, binary=False, sigmoid_output=False, reduction=
         accuracy = torch.mean(c)
         return accuracy.item()
 
-def calc_loss_diff_with_dataset(constraint, dataset, t_groups, idxs, model):
+def calc_loss_diff_with_dataset(constraint, dataset, z_groups, t_groups, idxs, model):
     '''
     return violation for two groups (binary case)
     '''
     model.eval()
+    gpu = -1
 
     if constraint == "eopp":
         losses = torch.zeros(len(t_groups))
         i = 0
-        for t_group, idx in zip(t_groups, idxs):
-            X, _, _, _, _ = dataset[idx]
-            losses[i] = nn.CrossEntropyLoss()(X, t_group[idx])
+
+        for z_group, t_group, idx in zip(z_groups, t_groups, idxs):
+            X_idxs = z_group[idx]
+            for X_idx in tqdm(X_idxs):
+                X, _, _, _, _ = dataset[X_idx]
+                X = X.unsqueeze(0)
+                target = t_group[X_idx].unsqueeze(0)
+                if gpu: X, target, model, losses = X.cuda(), target.cuda(), model.cuda(), losses.cuda()
+                loss = nn.CrossEntropyLoss()(model(X), target)
+                losses[i] += loss
+            losses[i] /= len(X_idxs)
             i += 1
         return abs(losses[0] - losses[1])
-
-    elif constraint == 'eo':
-        losses = []
-        for t_group, idx in t_groups, idxs:
-            X_0 = dataset[idx[0]]
-            X_1 = dataset[idx[1]]
-            loss_0 = nn.CrossEntropyLoss()(model(X_0), t_group[idx[0]])
-            loss_1 = nn.CrossEntropyLoss()(model(X_1), t_group[idx[1]])
-            losses.append(loss_0)
-            losses.append(loss_1)
-        return max(abs(losses[0] - losses[2]), abs(losses[1]) - losses[3])
