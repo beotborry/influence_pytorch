@@ -41,12 +41,10 @@ X_train = []
 y_train = train_dataset.attr[:,train_dataset.target_idx]
 protected_train = train_dataset.attr[:, train_dataset.sensi_idx]
 
-for i, data in tqdm(enumerate(train_dataset)):
-    input, _, _, _, _ = data
-    X_train.append(input)
+y_groups_train = [[],[]]
+for idx, sen_val in enumerate(protected_train):
+    y_groups_train[sen_val].append(idx)
 
-
-X_groups_train, y_groups_train = split_dataset(X_train, y_train, protected_train)
 constraint_idx_train = get_eopp_idx(y_groups_train)
 
 model = torch.load("./model/celeba")

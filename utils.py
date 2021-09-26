@@ -231,3 +231,29 @@ def get_accuracy(outputs, labels, binary=False, sigmoid_output=False, reduction=
     else:
         accuracy = torch.mean(c)
         return accuracy.item()
+
+def calc_loss_diff_with_dataset(constraint, dataset, t_groups, idxs, model):
+    '''
+    return violation for two groups (binary case)
+    '''
+    model.eval()
+
+    if constraint == "eopp":
+        losses = torch.zeros(len(t_groups))
+        i = 0
+        for t_group, idx in zip(t_groups, idxs):
+            X, _, _, _, _ = dataset[idx]
+            losses[i] = nn.CrossEntropyLoss()(X, t_group[idx])
+            i += 1
+        return abs(losses[0] - losses[1])
+
+    elif constraint == 'eo':
+        losses = []
+        for t_group, idx in t_groups, idxs:
+            X_0 = dataset[idx[0]]
+            X_1 = dataset[idx[1]]
+            loss_0 = nn.CrossEntropyLoss()(model(X_0), t_group[idx[0]])
+            loss_1 = nn.CrossEntropyLoss()(model(X_1), t_group[idx[1]])
+            losses.append(loss_0)
+            losses.append(loss_1)
+        return max(abs(losses[0] - losses[2]), abs(losses[1]) - losses[3])
