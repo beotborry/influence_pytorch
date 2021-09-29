@@ -120,17 +120,17 @@ def calc_influence_dataset(X, y, idxs, z_groups, t_groups, model, z_loader, gpu,
         influences.append(calc_influence(z, t, s_test_vec, model, z_loader, gpu=gpu))
     return influences
 
-def s_test_with_dataset(dataset, t_groups, idxs, model, z_loader, constraint, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1):
+def s_test_with_dataset(dataset, z_groups, t_groups, idxs, model, z_loader, constraint, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1):
     model.eval()
-    violation = calc_loss_diff_with_dataset(constraint, dataset, t_groups, idxs, model)
+    violation = calc_loss_diff_with_dataset(constraint, dataset, z_groups, t_groups, idxs, model)
 
     params = [p for p in model.parameters() if p.requires_grad]
     v = list(grad(violation, params, create_graph=True))
     h_estimate = v.copy()
     for i in range(recursion_depth):
-        for x, t in z_loader:
+        for x, _, _, t, _ in z_loader:
             if gpu >= 0:
-                x, t = x.cuda(), t.cuda()
+                x, t, model = x.cuda(), t.cuda(), model.cuda()
             y = model(x)
             y = F.softmax(y, dim=0)
             loss = torch.nn.functional.cross_entropy(y, t)
@@ -142,10 +142,10 @@ def s_test_with_dataset(dataset, t_groups, idxs, model, z_loader, constraint, re
             break
     return h_estimate
 
-def avg_s_test_with_dataset(dataset, t_groups, idxs, model, z_loader, constraint, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1, r=1):
+def avg_s_test_with_dataset(dataset, z_groups, t_groups, idxs, model, z_loader, constraint, recursion_depth=5000, damp=0.01, scale=25.0, gpu=-1, r=1):
     s_test_vec_list = []
     for i in range(r):
-        s_test_vec_list.append(s_test_with_dataset(dataset=dataset, t_groups=t_groups, idxs=idxs, model=model, z_loader=z_loader,
+        s_test_vec_list.append(s_test_with_dataset(dataset=dataset, z_groups= z_groups, t_groups=t_groups, idxs=idxs, model=model, z_loader=z_loader,
                                       constraint=constraint,
                                       recursion_depth=recursion_depth, damp=damp, scale=scale, gpu=gpu))
     s_test_vec = s_test_vec_list[0]
@@ -156,8 +156,8 @@ def avg_s_test_with_dataset(dataset, t_groups, idxs, model, z_loader, constraint
 
     return s_test_vec
 
-def calc_influence_dataset_with_dataset(y, idxs, dataset, t_groups, model, z_loader, gpu, constraint, r=1):
-    s_test_vec = avg_s_test(z_groups=dataset, t_groups=t_groups, idxs=idxs, model=model, z_loader=z_loader, gpu=gpu,
+def calc_influence_dataset_with_dataset(dataset, y, idxs, z_groups, t_groups, model, z_loader, gpu, constraint, r=1):
+    s_test_vec = avg_s_test_with_dataset(dataset=dataset, z_groups=z_groups, t_groups=t_groups, idxs=idxs, model=model, z_loader=z_loader, gpu=gpu,
                             constraint=constraint,
                             r=r)
     influences = []

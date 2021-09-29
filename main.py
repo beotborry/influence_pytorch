@@ -91,7 +91,7 @@ def main():
         elif method == 'influence' and _iter >= 1:
             start = time()
             weights = torch.tensor(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
-                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint, r=7))
+                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint, r=1))
             end = time()
             print("Elapsed time for calculating weights {}".format(end-start))
             weights = exp_normalize(weights, scale_factor)

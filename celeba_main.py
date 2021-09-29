@@ -22,9 +22,9 @@ model = models.resnet18(pretrained=True)
 optimizer = Adam(model.parameters(), lr=0.001)
 criterion = nn.CrossEntropyLoss()
 
-epochs = 1
+epochs = 5
 
-gpu = torch.cuda.is_available()
+gpu = False
 
 model.train()
 for epoch in range(epochs):
@@ -62,5 +62,5 @@ for epoch in range(epochs):
         running_acc_test += get_accuracy(outputs, labels)
     print("Test Acc: {}, Test loss: {}".format(running_acc_test / i, running_loss_test / i))
 
-torch.save(model, './model/celeba')
+torch.save(model, './model/celeba_cpu')
 
