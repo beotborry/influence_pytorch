@@ -17,6 +17,6 @@ example 별로 weighting 줌, weight에 의미가 있음
 1. UTKFace 이용해서 유사성 찾기?
 
 1. DP의 경우 특수한 상황에서만 loss_diff이 적용가능 이를 해결하는 방안?
-
+    gumble softmax로 differentiable 문제 해결
 1. train violation과 test violation 관계 보이기
     이건 그냥 train시 찍어보면 됨

@@ -83,7 +83,7 @@ def main():
     naive_acc = 0
     naive_vio = 0
 
-    scale_factor = 50
+    scale_factor = 30
 
     for _iter in range(iteration):
         print("Iteration: {}".format(_iter))
@@ -91,7 +91,7 @@ def main():
         elif method == 'influence' and _iter >= 1:
             start = time()
             weights = torch.tensor(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
-                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint, r=7))
+                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint, r=1))
             end = time()
             print("Elapsed time for calculating weights {}".format(end-start))
             weights = exp_normalize(weights, scale_factor)
@@ -124,7 +124,7 @@ def main():
         model.eval()
         with torch.no_grad():
             if gpu >= 0: X_test, y_test = X_test.cuda(), y_test.cuda()
-            accuracy = sum(model(X_test).argmax(dim=1) == y_test) / len(y_test)
+            accuracy = sum(model(X_test).argmax(dim=1) == y_test) / float(len(y_test))
 
         print("Iteration {}, Test Acc: {}".format(_iter, accuracy))
 

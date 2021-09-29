@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import confusion_matrix
 import os
+import torch.nn.functional as F
 
 def split_dataset(features, labels, protected_attributes):
     '''
@@ -80,6 +81,17 @@ def calc_loss_diff(constraint, z_groups, t_groups, idxs, model):
         return max(abs(losses[0] - losses[2]), abs(losses[1]) - losses[3])
 
     elif constraint == 'dp':
+        # matching y=1 prediction rate
+        pred_rates = [] # group_0, group_1
+        for z_group in z_groups:
+            y_pred = model(z_group)
+            y_pred = gumbel_softmax(y_pred, 1.0, hard=True)
+            count_1 = sum(y_pred)[1]
+            pred_rates.append(count_1 / float(len(y_pred)))
+
+        return abs(pred_rates[0] - pred_rates[1])
+    '''
+    elif constraint == 'dp':
         # group idx, y_label
 
         m_arr = [] #m_00, m_01, m_10, m_11
@@ -101,7 +113,7 @@ def calc_loss_diff(constraint, z_groups, t_groups, idxs, model):
 
         c = (m_arr[0] / (m_arr[0] + m_arr[1])) - (m_arr[2] / (m_arr[2] + m_arr[3]))
         return max(abs(L_p_01 - L_p_11), max(L_p_00 - L_p_10 - c, c + L_p_10 - L_p_00))
-
+    '''
 def calc_fairness_metric(constraint, z_groups, t_groups, model):
     '''
     return fairness metric value for each fairness constraint with two groups(binary case)
@@ -231,3 +243,19 @@ def get_accuracy(outputs, labels, binary=False, sigmoid_output=False, reduction=
     else:
         accuracy = torch.mean(c)
         return accuracy.item()
+
+def gumbel_softmax_sample(logits, tau, eps=1e-20):
+    u = torch.rand(logits.shape)
+    g = -torch.log(-torch.log(u+eps)+eps)
+    x = logits + g
+    return F.softmax(x / tau, dim = -1)
+
+def gumbel_softmax(logits, tau, hard=False):
+    y = gumbel_softmax_sample(logits, tau)
+    if not hard:
+        return y
+    n_classes = y.shape[-1]
+    z = torch.argmax(y, dim = -1)
+    z = F.one_hot(z, n_classes)
+    z = (z - y).detach() + y
+    return z
