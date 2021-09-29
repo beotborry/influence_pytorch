@@ -20,3 +20,14 @@ example 별로 weighting 줌, weight에 의미가 있음
 
 1. train violation과 test violation 관계 보이기
     이건 그냥 train시 찍어보면 됨
+    
+    
+29 sep
+
+1. grad sum 순서 바꿔서 처리 해보기
+
+1. celeba image 확인
+
+1. DP Prediction 비율만 맞춰주는 term으로 violation 대체
+
+1. t-SNE paper 한번 찍어보기
