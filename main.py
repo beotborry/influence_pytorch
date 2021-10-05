@@ -10,6 +10,8 @@ from influence_function import calc_influence_dataset
 from tqdm import tqdm
 from argument import get_args
 from time import time
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
 
 def main():
     args = get_args()
@@ -17,6 +19,8 @@ def main():
     dataset = args.dataset
     fairness_constraint = args.constraint
     method = args.method
+    epoch = args.epoch
+    iteration = args.iteration
 
     if dataset == "adult":
         from adult_dataloader import get_data
@@ -70,9 +74,6 @@ def main():
 
     optimizer = SGD(model.parameters(), lr=0.001)
     criterion = nn.CrossEntropyLoss(reduction='none')
-
-    epoch = 20
-    iteration = 30
 
     multipliers = np.zeros(len(protected_train)) if (fairness_constraint == 'eopp' or fairness_constraint == 'dp') else np.zeros(len(protected_train) * 2)
     eta = 3.
@@ -136,12 +137,39 @@ def main():
 
 
     if method == 'naive':
-        influence_scores = np.array(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
-                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint))
-        top_10_idx = np.argpartition(influence_scores, -10)[-10:]
-        print(top_10_idx)
-        print(X_train[top_10_idx])
+        #influence_scores = np.array(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
+        #                                                    model, train_loader, gpu=gpu, constraint=fairness_constraint))
 
+        k = 100
+        #largest_idx = np.argpartition(influence_scores, -k)[-k:]
+        #smallest_idx = np.argpartition(influence_scores, k)[:k]
+
+        #pos_idx = np.where(influence_scores > 0)[0]
+        #neg_idx = np.where(influence_scores < 0)[0]
+
+        tsne_model = TSNE(n_components=2, perplexity=30, learning_rate=200)
+
+        transformed = tsne_model.fit_transform(X_train)
+
+        #transformed_largest = transformed[largest_idx]
+        #transformed_smallest = transformed[smallest_idx]
+
+        #transformed_pos = transformed[pos_idx]
+        #transformed_neg = transformed[neg_idx]
+
+        #xs = np.concatenate((transformed_pos[:, 0], transformed_neg[:, 0]), axis=0)
+        #ys = np.concatenate((transformed_pos[:, 1], transformed_neg[:, 1]), axis=0)
+        xs = transformed[:, 0]
+        ys = transformed[:, 1]
+
+        #is_harmful = np.concatenate((np.ones(k), np.zeros(k)), axis=0)
+        #is_harmful = np.concatenate((np.ones(len(transformed_pos)), np.zeros(len(transformed_neg))))
+        group = []
+        for idx, arr in enumerate(protected_train):
+            for elem in arr:
+                if elem == 1: group.append(idx)
+        plt.scatter(xs, ys, c=group)
+        plt.show()
 
 if __name__ == '__main__':
     main()
