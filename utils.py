@@ -137,6 +137,7 @@ def calc_fairness_metric(constraint, z_groups, t_groups, model):
         return abs(tp_0 / (fn_0 + tp_0) - tp_1 / (fn_1 + tp_1))
 
     elif constraint == 'eo':
+        # definition of DEO_A for 2 groups, binary label
         return (abs(tp_0 / (fn_0 + tp_0) - tp_1 / (fn_1 + tp_1)) + abs(tn_0 / (fp_0 + tn_0) - tn_1 / (fp_0 + tn_1))) / 2.
 
     elif constraint == 'dp':

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 from utils import split_dataset, exp_normalize, calc_loss_diff, calc_fairness_metric, get_error_and_violations, debias_weights
-from torch.optim import SGD
+from torch.optim import SGD, Adam
 from mlp import MLP
 from adult_dataloader import CustomDataset
 from torch.utils.data import DataLoader
@@ -12,6 +12,8 @@ from argument import get_args
 from time import time
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
+import os
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 def main():
     args = get_args()
@@ -21,6 +23,8 @@ def main():
     method = args.method
     epoch = args.epoch
     iteration = args.iteration
+    scale_factor = args.scaler
+    eta = args.eta
 
     if dataset == "adult":
         from adult_dataloader import get_data
@@ -76,34 +80,44 @@ def main():
     criterion = nn.CrossEntropyLoss(reduction='none')
 
     multipliers = np.zeros(len(protected_train)) if (fairness_constraint == 'eopp' or fairness_constraint == 'dp') else np.zeros(len(protected_train) * 2)
-    eta = 3.
 
     max_iter = 0
     max_tradeoff = 0
+    max_tradeoff_acc = 0
+    max_tradeoff_fairness_metric = 0
 
-    naive_acc = 0
-    naive_vio = 0
+    naive_acc = 85.79
+    naive_vio = 5.2
 
-    scale_factor = 30
+    skip = False
 
-    for _iter in range(iteration):
+    for _iter in range(1, iteration + 1):
+        print()
         print("Iteration: {}".format(_iter))
-        if _iter == 0 or method == 'naive': weights = torch.ones(len(X_train))
-        elif method == 'influence' and _iter >= 1:
+        if _iter == 1 or method == 'naive': weights = torch.ones(len(X_train))
+        elif method == 'influence' and _iter >= 2:
+            r = 10
+            t = 1000
+            random_sampler = torch.utils.data.RandomSampler(train_dataset, replacement=False)
+            train_sampler = torch.utils.data.DataLoader(train_dataset, batch_size=t, sampler=random_sampler)
             start = time()
+
             weights = torch.tensor(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
-                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint, r=1))
+                                                            model, train_sampler, weights, gpu=gpu, constraint=fairness_constraint, r=r,
+                                                          recursion_depth=t, scale=500.0))
             end = time()
-            print("Elapsed time for calculating weights {}".format(end-start))
+            print("Elapsed time for calculating weights {:.1f}s".format(end-start))
+            print(weights[:3], torch.mean(weights))
             weights = exp_normalize(weights, scale_factor)
-        elif method == 'reweighting' and _iter >= 1:
+
+        elif method == 'reweighting' and _iter >= 2:
             weights = torch.tensor(debias_weights(fairness_constraint, y_train, protected_train, multipliers))
 
         print("Weights: {}".format(weights))
         for _epoch in tqdm(range(epoch)):
             model.train()
             i = 0
-            for z, t in train_loader:
+            for z, t, idx in train_loader:
                 if gpu >= 0: z, t, model = z.cuda(), t.cuda(), model.cuda()
                 model.train()
                 y_pred = model(z)
@@ -127,20 +141,35 @@ def main():
             if gpu >= 0: X_test, y_test = X_test.cuda(), y_test.cuda()
             accuracy = sum(model(X_test).argmax(dim=1) == y_test) / float(len(y_test))
 
-        print("Iteration {}, Test Acc: {}".format(_iter, accuracy))
+        print("Iteration {}, Test Acc: {:.2f}%".format(_iter, accuracy * 100))
 
         violation = calc_loss_diff(fairness_constraint, X_groups_test, y_groups_test, constraint_idx_test, model)
-        print("Iteration {}, Violation: {}".format(_iter, violation))
+        print("Iteration {}, Violation: {:.4f}".format(_iter, violation))
 
         fairness_metric = calc_fairness_metric(fairness_constraint, X_groups_test, y_groups_test, model)
-        print("Iteration {}, Fairness metric: {}%".format(_iter, fairness_metric * 100))
+        print("Iteration {}, Fairness metric: {:.2f}%".format(_iter, fairness_metric * 100))
 
+        tradeoff = (naive_vio - fairness_metric * 100) / (naive_acc - accuracy * 100)
+        if tradeoff > max_tradeoff:
+            max_iter = _iter
+            max_tradeoff  = tradeoff
+            max_tradeoff_acc = accuracy * 100
+            max_tradeoff_fairness_metric = fairness_metric * 100
+
+    log = open(str(dataset) + ' ' + str(method) + ".txt", 'a', encoding="UTF8")
+    if str(method) == "reweighting":
+        log.write("eta: {}, Acc: {:.2f}, Fairness Metric: {:.2f}, Tradeoff: {} \n".format(eta, max_tradeoff_acc, max_tradeoff_fairness_metric, max_tradeoff))
+    elif str(method) == "influence":
+        log.write("scale factor: {}, Acc: {:.2f}, Fairness Metric: {:.2f}, Tradeoff: {} \n".format(scale_factor, max_tradeoff_acc, max_tradeoff_fairness_metric, max_tradeoff))
+    log.close()
 
     if method == 'naive':
-        #influence_scores = np.array(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
-        #                                                    model, train_loader, gpu=gpu, constraint=fairness_constraint))
+        influence_scores = np.array(calc_influence_dataset(X_train, y_train, constraint_idx_train, X_groups_train, y_groups_train,
+                                                            model, train_loader, gpu=gpu, constraint=fairness_constraint))
 
         k = 100
+
+        pos_idx = np.where(influence_scores > np.median(influence_scores))
         #largest_idx = np.argpartition(influence_scores, -k)[-k:]
         #smallest_idx = np.argpartition(influence_scores, k)[:k]
 
@@ -151,24 +180,20 @@ def main():
 
         transformed = tsne_model.fit_transform(X_train)
 
-        #transformed_largest = transformed[largest_idx]
-        #transformed_smallest = transformed[smallest_idx]
+        transformed_largest = transformed[largest_idx]
+        transformed_smallest = transformed[smallest_idx]
 
         #transformed_pos = transformed[pos_idx]
         #transformed_neg = transformed[neg_idx]
 
-        #xs = np.concatenate((transformed_pos[:, 0], transformed_neg[:, 0]), axis=0)
-        #ys = np.concatenate((transformed_pos[:, 1], transformed_neg[:, 1]), axis=0)
-        xs = transformed[:, 0]
-        ys = transformed[:, 1]
+        xs = np.concatenate((transformed_largest[:, 0], transformed_smallest[:, 0]), axis=0)
+        ys = np.concatenate((transformed_largest[:, 1], transformed_smallest[:, 1]), axis=0)
+        #xs = transformed[:, 0]
+        #ys = transformed[:, 1]
 
-        #is_harmful = np.concatenate((np.ones(k), np.zeros(k)), axis=0)
+        is_harmful = np.concatenate((np.ones(k), np.zeros(k)), axis=0)
         #is_harmful = np.concatenate((np.ones(len(transformed_pos)), np.zeros(len(transformed_neg))))
-        group = []
-        for idx, arr in enumerate(protected_train):
-            for elem in arr:
-                if elem == 1: group.append(idx)
-        plt.scatter(xs, ys, c=group)
+        plt.scatter(xs, ys, c=is_harmful)
         plt.show()
 
 if __name__ == '__main__':

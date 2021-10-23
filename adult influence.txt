@@ -1,0 +1,6 @@
+scale factor: 5.0, Acc: 85.79, Fairness Metric: 4.61, Tradeoff: 202.6544189453125 
+scale factor: 10.0, Acc: 85.72, Fairness Metric: 2.56, Tradeoff: 37.51053237915039 
+scale factor: 15.0, Acc: 85.71, Fairness Metric: 2.86, Tradeoff: 30.55356788635254 
+scale factor: 20.0, Acc: 85.70, Fairness Metric: 1.08, Tradeoff: 46.39842987060547 
+scale factor: 25.0, Acc: 85.64, Fairness Metric: 2.11, Tradeoff: 20.560407638549805 
+scale factor: 30.0, Acc: 85.67, Fairness Metric: 1.73, Tradeoff: 28.989431381225586 

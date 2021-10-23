@@ -134,4 +134,4 @@ class CustomDataset(Dataset):
         return len(self.y_train)
 
     def __getitem__(self, idx):
-        return self.X_train[idx], self.y_train[idx]
+        return self.X_train[idx], self.y_train[idx], idx

@@ -7,6 +7,12 @@ def get_args():
     parser.add_argument('--method', required=True, default='', choices=['naive', 'influence', 'reweighting'])
     parser.add_argument('--epoch', required=True, default=0, type=int)
     parser.add_argument('--iteration', required=True, default=0, type=int)
+    parser.add_argument('--scaler', default=None, type=float)
+    parser.add_argument('--eta', default=None, type=float)
 
     args = parser.parse_args()
+    if args.method == 'influence' and args.scaler is None:
+        parser.error('influence requires --scaler')
+    if args.method == 'reweighting' and args.eta is None:
+        parser.error('reweighting requires --eta')
     return args
